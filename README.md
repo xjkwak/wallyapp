@@ -1,0 +1,2 @@
+# wallyapp
+A wally scoreboard.
