@@ -14,6 +14,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
         chronometer.start();
+        SessionManager session = new SessionManager(getApplicationContext());
+        String username = session.getUserName();
+        setTitle("WallyApp - Usuario: " + username);
     }
 
     public void addPoints(View view) {

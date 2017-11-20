@@ -25,5 +25,6 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_enter"/>
+        android:onClick="enter"
+        android:text="@string/login_enter" />
 </LinearLayout>
