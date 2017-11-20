@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:textAlignment="center"
+    android:background="@drawable/background_gradient"
     tools:context="siliconwally.net.wallyapp.MainActivity">
 
     <LinearLayout
         android:id="@+id/topToolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+
         <EditText
             android:id="@+id/teamNameA"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
+            android:text="Equipo A"
+            android:layout_weight="40.0"/>
         <TextView
             android:id="@+id/setScoreA"
             android:layout_width="wrap_content"
@@ -29,7 +34,7 @@
             android:id="@+id/switchSidesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:background="@drawable/button_selector_switch_sides"/>
 
         <TextView
             android:id="@+id/setScoreB"
@@ -39,48 +44,116 @@
 
         <EditText
             android:id="@+id/teamNameB"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
-
+            android:text="Equipo B"
+            android:layout_weight="40.0" />
     </LinearLayout>
-
-    <Chronometer
-        android:id="@+id/chronometer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <LinearLayout
+        android:id="@+id/scoreControlsPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/pointsTeamA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="addPoints"
-            android:text="0"
-            android:textSize="60sp"
-            android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/topToolbar">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4.0">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.0">
+                <Button
+                    android:id="@+id/minusButtonA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    style="@style/minusButton"
+                    />
+                <ToggleButton android:id="@+id/time1A" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timeButtonOnOff"/>
+                <ToggleButton android:id="@+id/time2A" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timeButtonOnOff"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/pointsTeamA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5.0"
+                android:onClick="addPoints"
+                android:text="0"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2.0">
+            <Chronometer
+                android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end"
+                android:id="@+id/chronometer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <Button android:textSize="20sp" android:textColor="#88000000"
+                android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end"
+                android:id="@+id/show_popup"
+                android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10dp"
+                android:text="Menu" android:layout_below="@+id/chronometer"
+                android:layout_alignParentLeft="true" android:layout_alignParentRight="true" android:top="@+id/chronometer">
+                <requestFocus />
+            </Button>
+            <Button
+                android:id="@+id/endSetButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
 
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4.0">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2.0">
+                <ToggleButton android:id="@+id/time1B" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timeButtonOnOff"/>
+                <ToggleButton android:id="@+id/time2B" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/timeButtonOnOff"/>
+                <Button
+                    android:id="@+id/minusButtonB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-1"
+                    style="@style/minusButton"
+                    />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/pointsTeamB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="addPoints"
-            android:text="0"
-            android:textSize="60sp"
-            android:textStyle="bold" />
+            <Button
+                android:id="@+id/pointsTeamB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5.0"
+                android:onClick="addPoints"
+                android:text="0"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-
-
-
-</LinearLayout>
+</RelativeLayout>
