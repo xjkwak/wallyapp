@@ -2,4 +2,8 @@
     <string name="app_name">WallyApp</string>
     <string name="defaultNameTeamA">Team A</string>
     <string name="defaultNameTeamB">Team B</string>
+    <string name="title_activity_login">WallyApp - Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_enter">Enter</string>
 </resources>
