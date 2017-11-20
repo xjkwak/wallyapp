@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
+            android:text="@string/defaultNameTeamA"
+            android:layout_weight="40.0"/>
         <TextView
             android:id="@+id/setScoreA"
             android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
             android:id="@+id/switchSidesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            app:srcCompat="@drawable/menu_hamburguer" />
 
         <TextView
             android:id="@+id/setScoreB"
@@ -43,7 +44,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
+            android:text="@string/defaultNameTeamB"
+            android:layout_weight="40.0"/>
 
     </LinearLayout>
 

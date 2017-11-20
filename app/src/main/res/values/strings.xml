@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WallyApp</string>
+    <string name="defaultNameTeamA">Team A</string>
+    <string name="defaultNameTeamB">Team B</string>
 </resources>
