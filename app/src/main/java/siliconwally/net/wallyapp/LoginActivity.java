@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(i);
         }
         else {
-            Toast.makeText(getApplicationContext(), "Credenciales incorrectas. Intente nuevamente.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG).show();
         }
     }
 }

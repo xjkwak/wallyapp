@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">WallyApp</string>
+    <string name="defaultNameTeamA">Equipo A</string>
+    <string name="defaultNameTeamB">Equipo B</string>
+    <string name="title_activity_login">WallyApp - Autenticación</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login_enter">Ingresar</string>
+    <string name="incorrect_credentials">Nombre de usuario o contraseña incorrecta. Por favor vuelve a intentar.</string>
+    <string name="whatsapp_not_installed">Whatsapp no está instalado.</string>
+    <string name="wally_results">Resultados:\n %1$s (%2$d)\n %3$s (%4$d)\n</string>
+</resources>

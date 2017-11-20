@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         int teamB = Integer.parseInt(((Button)findViewById(R.id.pointsTeamB)).getText().toString());
 
         if (teamA >= 5 || teamB >= 5) {
-            String score = "Resultados:\n"+nameTeamA+"("+teamA+")\n"+nameTeamB+"("+teamB+")\n";
+            String score = String.format(getApplicationContext().getString(R.string.wally_results), nameTeamA, teamA, nameTeamB, teamB);
             Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
             whatsappIntent.setType("text/plain");
             whatsappIntent.setPackage("com.whatsapp");
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 startActivity(whatsappIntent);
             } catch (android.content.ActivityNotFoundException ex) {
-                Toast.makeText(getApplicationContext(),"Whatsapp have not been installed.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.whatsapp_not_installed), Toast.LENGTH_LONG).show();
             }
         }
     }

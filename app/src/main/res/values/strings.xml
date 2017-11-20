@@ -6,4 +6,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login_enter">Enter</string>
+    <string name="incorrect_credentials">Incorrect username or password. Please try again.</string>
+    <string name="whatsapp_not_installed">Whatsapp has not been installed.</string>
+    <string name="wally_results">Results:\n %1$s (%2$d)\n %3$s (%4$d)\n</string>
 </resources>
