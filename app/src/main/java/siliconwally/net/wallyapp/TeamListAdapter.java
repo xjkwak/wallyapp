@@ -8,33 +8,32 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
+public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamListViewHolder> {
 
-public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchListViewHolder> {
-
-    private ArrayList<Match> list;
+    private List<Team> list;
     int selectedPosition = 0;
 
-    public MatchListAdapter(ArrayList<Match> lista) {
+    public TeamListAdapter(List<Team> lista) {
         this.list = lista;
     }
 
     @Override
-    public MatchListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TeamListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
-        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.match_row, parent, false);
+        v = LayoutInflater.from(parent.getContext()).inflate(R.layout.team_row, parent, false);
 
-        return new MatchListViewHolder(v);
+        return new TeamListViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(MatchListViewHolder holder, int position) {
-        final Match match = list.get(position);
-        holder.txtDate.setText(android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(match.getDate()));
-        holder.txtTeams.setText(match.getTeams());
+    public void onBindViewHolder(TeamListViewHolder holder, int position) {
+        final Team team = list.get(position);
+        holder.name.setText(team.getName());
+        holder.company.setText(team.getCompany());
 
-        holder.txtTeams.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
+        holder.company.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
     }
 
     @Override
@@ -42,14 +41,14 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
       return this.list.size();
     }
 
-    public class MatchListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView txtDate;
-        private TextView txtTeams;
+    public class TeamListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView name;
+        private TextView company;
 
-        public MatchListViewHolder(View itemView) {
+        public TeamListViewHolder(View itemView) {
             super(itemView);
-            txtDate = (TextView) itemView.findViewById(R.id.txt_date);
-            txtTeams =( TextView) itemView.findViewById(R.id.txt_teams);
+            name = (TextView) itemView.findViewById(R.id.name);
+            company =( TextView) itemView.findViewById(R.id.company);
             itemView.setOnClickListener(this);
         }
 

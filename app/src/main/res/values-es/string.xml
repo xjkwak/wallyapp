@@ -11,4 +11,7 @@
     <string name="incorrect_credentials">Nombre de usuario o contraseña incorrecta. Por favor vuelve a intentar.</string>
     <string name="whatsapp_not_installed">Whatsapp no está instalado.</string>
     <string name="wally_results">Resultados:\n %1$s (%2$d)\n %3$s (%4$d)\n</string>
+    <string name="teams">Equipos</string>
+    <string name="matches">Partidos</string>
+    <string name="logout">Salir</string>
 </resources>
