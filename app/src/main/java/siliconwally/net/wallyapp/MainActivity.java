@@ -13,17 +13,38 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+
+    private EditText teamNameA;
+    private EditText teamNameB;
+    private Match match;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            match = (Match) extras.getSerializable("match");
+        }
         setContentView(R.layout.activity_main);
         Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
         chronometer.start();
         SessionManager session = new SessionManager(getApplicationContext());
         String username = session.getUserName();
         setTitle("WallyApp - Usuario: " + username);
+
+        teamNameA = findViewById(R.id.teamNameA);
+        teamNameB = findViewById(R.id.teamNameB);
+        teamNameA.setKeyListener(null);
+        teamNameB.setKeyListener(null);
+
+        if (match != null) {
+            teamNameA.setText(match.getTeamA());
+            teamNameB.setText(match.getTeamB());
+        }
     }
 
     public void addPoints(View view) {
@@ -34,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         button.setText(String.valueOf(intValue));
         System.out.println("Valor:  " + value);
 
-        String nameTeamA = ((EditText)findViewById(R.id.teamNameA)).getText().toString();
-        String nameTeamB = ((EditText)findViewById(R.id.teamNameB)).getText().toString();
+        String nameTeamA = teamNameA.getText().toString();
+        String nameTeamB = teamNameB.getText().toString();
         int teamA = Integer.parseInt(((Button)findViewById(R.id.pointsTeamA)).getText().toString());
         int teamB = Integer.parseInt(((Button)findViewById(R.id.pointsTeamB)).getText().toString());
 

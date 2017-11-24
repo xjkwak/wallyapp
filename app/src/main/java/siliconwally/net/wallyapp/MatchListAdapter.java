@@ -1,5 +1,7 @@
 package siliconwally.net.wallyapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,15 +10,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchListViewHolder> {
 
-    private ArrayList<Match> list;
+    private List<Match> list;
     int selectedPosition = 0;
+    private Context context;
 
-    public MatchListAdapter(ArrayList<Match> lista) {
+    public MatchListAdapter(Context context, List<Match> lista) {
+        this.context = context;
         this.list = lista;
     }
 
@@ -31,7 +36,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     @Override
     public void onBindViewHolder(MatchListViewHolder holder, int position) {
         final Match match = list.get(position);
-        holder.txtDate.setText(android.text.format.DateFormat.getDateFormat(getApplicationContext()).format(match.getDate()));
+        holder.txtDate.setText(match.getDate());
         holder.txtTeams.setText(match.getTeams());
 
         holder.txtTeams.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
@@ -66,7 +71,18 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
             selectedPosition = getAdapterPosition();
             System.out.println("Entra: " + selectedPosition);
             notifyItemChanged(selectedPosition);
+
+            Match match = list.get(selectedPosition);
+            System.out.println("Seleccionado: " + match);
+            MatchListAdapter.this.showScoreboard(match);
             // Do your another stuff for your onClick
         }
+    }
+
+    private void showScoreboard(Match match) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("match", match);
+        context.startActivity(intent);
+
     }
 }

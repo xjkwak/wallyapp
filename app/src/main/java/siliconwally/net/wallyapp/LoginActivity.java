@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                 SessionManager session = new SessionManager(getApplicationContext());
                 session.saveUser("Facebook User");
 
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                 startActivity(i);
             }
 
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             SessionManager session = new SessionManager(getApplicationContext());
             session.saveUser(username);
 
-            Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, MatchesActivity.class);
             startActivity(i);
         }
         else {

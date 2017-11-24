@@ -12,4 +12,7 @@ import retrofit2.http.GET;
 public interface SiliconWally {
     @GET("/equiposjson")
     Call<List<Team>> teams();
+
+    @GET("/api/v1/matches")
+    Call<List<Match>> matches();
 }

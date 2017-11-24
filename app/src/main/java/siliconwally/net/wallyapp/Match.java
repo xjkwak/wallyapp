@@ -1,30 +1,31 @@
 package siliconwally.net.wallyapp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by cristian on 20-11-17.
  */
 
-public class Match {
+public class Match implements Serializable {
 
-    private Date date;
+    private String date;
     private String teamA;
     private String teamB;
     private String arena;
 
-    public Match(Date date, String teamA, String teamB, String arena) {
+    public Match(String date, String teamA, String teamB, String arena) {
         this.date = date;
         this.teamA = teamA;
         this.teamB = teamB;
         this.arena = arena;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
