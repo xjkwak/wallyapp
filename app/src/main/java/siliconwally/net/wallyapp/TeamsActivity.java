@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +21,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class TeamsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         setContentView(R.layout.activity_teams);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -39,6 +46,7 @@ public class TeamsActivity extends AppCompatActivity {
             public void onResponse(Call<List<Team>> call, Response<List<Team>> response) {
                 List<Team> teams = response.body();
 
+                TeamsActivity.this.writeTeams(teams);
                 System.out.println("Recuperó");
                 System.out.println(teams.toString());
 
@@ -56,9 +64,12 @@ public class TeamsActivity extends AppCompatActivity {
                 System.out.println("Falló");
             }
         });
+    }
 
+    private void writeTeams(List<Team> teams) {
 
-
-
+        for (Team team: teams) {
+            mDatabase.child("teams").child(String.valueOf(team.getNid())).setValue(team);
+        }
     }
 }

@@ -7,6 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +23,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MatchesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private DatabaseReference mDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://siliconwally.net")
@@ -32,18 +39,19 @@ public class MatchesActivity extends AppCompatActivity {
 
         SiliconWally siliconWally = retrofit.create(SiliconWally.class);
 
-        Call<List<Match>> teams = siliconWally.matches();
+        Call<List<Match>> matches = siliconWally.matches();
         final List<Match> list = new ArrayList<>();
 
-        teams.enqueue(new Callback<List<Match>>() {
+        matches.enqueue(new Callback<List<Match>>() {
             @Override
             public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
-                List<Match> teams = response.body();
+                List<Match> matches = response.body();
 
                 System.out.println("Recuperó");
-                System.out.println(teams.toString());
+                MatchesActivity.this.writeMatches(matches);
+                System.out.println(matches.toString());
 
-                MatchListAdapter userListAdapter = new MatchListAdapter(MatchesActivity.this, teams);
+                MatchListAdapter userListAdapter = new MatchListAdapter(MatchesActivity.this, matches);
                 MatchesActivity.this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                 MatchesActivity.this.recyclerView.setAdapter(userListAdapter);
 
@@ -57,5 +65,12 @@ public class MatchesActivity extends AppCompatActivity {
                 System.out.println("Falló");
             }
         });
+    }
+
+    private void writeMatches(List<Match> matches) {
+
+        for (Match match: matches) {
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
     }
 }

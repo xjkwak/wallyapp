@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -20,11 +23,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     private EditText teamNameA;
     private EditText teamNameB;
     private Match match;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if (extras != null) {
             match = (Match) extras.getSerializable("match");
@@ -60,7 +66,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int teamA = Integer.parseInt(((Button)findViewById(R.id.pointsTeamA)).getText().toString());
         int teamB = Integer.parseInt(((Button)findViewById(R.id.pointsTeamB)).getText().toString());
 
-        if (teamA >= 5 || teamB >= 5) {
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countA").setValue(teamA);
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countB").setValue(teamB);
+
+        if (teamA >= 25 || teamB >= 25) {
             String score = String.format(getApplicationContext().getString(R.string.wally_results), nameTeamA, teamA, nameTeamB, teamB);
             Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
             whatsappIntent.setType("text/plain");

@@ -6,12 +6,22 @@ package siliconwally.net.wallyapp;
 
 public class Team {
 
+    private int nid;
     private String name;
     private String company;
 
-    public Team(String name, String company) {
+    public Team(int nid, String name, String company) {
+        this.nid = nid;
         this.name = name;
         this.company = company;
+    }
+
+    public int getNid() {
+        return nid;
+    }
+
+    public void setNid(int nid) {
+        this.nid = nid;
     }
 
     public String getName() {
