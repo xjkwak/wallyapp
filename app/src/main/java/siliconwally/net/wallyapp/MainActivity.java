@@ -1,6 +1,7 @@
 package siliconwally.net.wallyapp;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,17 +12,26 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
+    private TextView setName;
+    private TextView scoreA;
+    private TextView scoreB;
     private EditText teamNameA;
     private EditText teamNameB;
+    private Button scoreTeamA;
+    private Button scoreTeamB;
     private Match match;
     private DatabaseReference mDatabase;
 
@@ -36,6 +46,28 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             match = (Match) extras.getSerializable("match");
         }
         setContentView(R.layout.activity_main);
+        scoreTeamA = findViewById(R.id.pointsTeamA);
+        scoreTeamB = findViewById(R.id.pointsTeamB);
+        scoreA = findViewById(R.id.setScoreA);
+        scoreB = findViewById(R.id.setScoreB);
+        setName = findViewById(R.id.setName);
+
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                match = dataSnapshot.getValue(Match.class);
+                scoreTeamA.setText(String.valueOf(match.getCountA()));
+                scoreTeamB.setText(String.valueOf(match.getCountB()));
+                System.out.println(match);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
         chronometer.start();
         SessionManager session = new SessionManager(getApplicationContext());
@@ -51,6 +83,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             teamNameA.setText(match.getTeamA());
             teamNameB.setText(match.getTeamB());
         }
+
+        setSetName();
+    }
+
+    private void setSetName() {
+        int sets = match.getScores().size();
+
+        if (sets >= 0 && sets < 5) {
+            Resources res = getResources();
+            String setsName[] = res.getStringArray(R.array.sets);
+            setName.setText(setsName[sets]);
+        }
     }
 
     public void addPoints(View view) {
@@ -63,24 +107,30 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         String nameTeamA = teamNameA.getText().toString();
         String nameTeamB = teamNameB.getText().toString();
-        int teamA = Integer.parseInt(((Button)findViewById(R.id.pointsTeamA)).getText().toString());
-        int teamB = Integer.parseInt(((Button)findViewById(R.id.pointsTeamB)).getText().toString());
+        int teamA = Integer.parseInt(scoreTeamA.getText().toString());
+        int teamB = Integer.parseInt(scoreTeamB.getText().toString());
 
         mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countA").setValue(teamA);
         mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countB").setValue(teamB);
 
-        if (teamA >= 25 || teamB >= 25) {
-            String score = String.format(getApplicationContext().getString(R.string.wally_results), nameTeamA, teamA, nameTeamB, teamB);
-            Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-            whatsappIntent.setType("text/plain");
-            whatsappIntent.setPackage("com.whatsapp");
-            whatsappIntent.putExtra(Intent.EXTRA_TEXT, score);
+        if (teamA >= 15 || teamB >= 15) {
+            match.saveScore();
+            setSetName();
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+            scoreA.setText(match.getScoreA());
+            scoreB.setText(match.getScoreB());
 
-            try {
-                startActivity(whatsappIntent);
-            } catch (android.content.ActivityNotFoundException ex) {
-                Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.whatsapp_not_installed), Toast.LENGTH_LONG).show();
-            }
+
+//            String score = String.format(getApplicationContext().getString(R.string.wally_results), nameTeamA, teamA, nameTeamB, teamB);
+//            Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+//            whatsappIntent.setType("text/plain");
+//            whatsappIntent.setPackage("com.whatsapp");
+//            whatsappIntent.putExtra(Intent.EXTRA_TEXT, score);
+//            try {
+//                startActivity(whatsappIntent);
+//            } catch (android.content.ActivityNotFoundException ex) {
+//                Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.whatsapp_not_installed), Toast.LENGTH_LONG).show();
+//            }
         }
     }
 

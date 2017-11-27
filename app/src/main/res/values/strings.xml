@@ -14,4 +14,11 @@
     <string name="teams">Teams</string>
     <string name="matches">Matches</string>
     <string name="logout">Logout</string>
+    <string-array name="sets">
+        <item>First Set</item>
+        <item>Second Set</item>
+        <item>Third Set</item>
+        <item>Fourth Set</item>
+        <item>Fifth Set</item>
+    </string-array>
 </resources>
