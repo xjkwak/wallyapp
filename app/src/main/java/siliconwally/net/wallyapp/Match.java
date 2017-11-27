@@ -17,6 +17,8 @@ public class Match implements Serializable {
     private String arena;
     private int countA;
     private int countB;
+    private int scoreA;
+    private int scoreB;
     private ArrayList<String> scores;
 
     public Match() {
@@ -32,6 +34,22 @@ public class Match implements Serializable {
         this.arena = arena;
         this.countA = 0;
         this.countB = 0;
+    }
+
+    public void setScoreA(int scoreA) {
+        this.scoreA = scoreA;
+    }
+
+    public void setScoreB(int scoreB) {
+        this.scoreB = scoreB;
+    }
+
+    public int getScoreA() {
+        return scoreA;
+    }
+
+    public int getScoreB() {
+        return scoreB;
     }
 
     public ArrayList<String> getScores() {
@@ -109,16 +127,15 @@ public class Match implements Serializable {
 
     public void saveScore() {
         this.getScores().add(countA+","+countB);
+
+        if (countA > countB) {
+            scoreA++;
+        }
+        else {
+            scoreB++;
+        }
         countA=0;
         countB=0;
     }
 
-    //TODO: Refactor how to save score.
-    public String getScoreA() {
-        return "1";
-    }
-
-    public String getScoreB() {
-        return "1";
-    }
 }

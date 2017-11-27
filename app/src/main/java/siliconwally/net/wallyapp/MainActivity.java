@@ -103,35 +103,21 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         int intValue = Integer.parseInt(value);
         intValue++;
         button.setText(String.valueOf(intValue));
-        System.out.println("Valor:  " + value);
 
-        String nameTeamA = teamNameA.getText().toString();
-        String nameTeamB = teamNameB.getText().toString();
         int teamA = Integer.parseInt(scoreTeamA.getText().toString());
         int teamB = Integer.parseInt(scoreTeamB.getText().toString());
 
-        mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countA").setValue(teamA);
-        mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countB").setValue(teamB);
+        match.setCountA(teamA);
+        match.setCountB(teamB);
 
         if (teamA >= 15 || teamB >= 15) {
             match.saveScore();
             setSetName();
-            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
-            scoreA.setText(match.getScoreA());
-            scoreB.setText(match.getScoreB());
-
-
-//            String score = String.format(getApplicationContext().getString(R.string.wally_results), nameTeamA, teamA, nameTeamB, teamB);
-//            Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-//            whatsappIntent.setType("text/plain");
-//            whatsappIntent.setPackage("com.whatsapp");
-//            whatsappIntent.putExtra(Intent.EXTRA_TEXT, score);
-//            try {
-//                startActivity(whatsappIntent);
-//            } catch (android.content.ActivityNotFoundException ex) {
-//                Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.whatsapp_not_installed), Toast.LENGTH_LONG).show();
-//            }
+            scoreA.setText(String.valueOf(match.getScoreA()));
+            scoreB.setText(String.valueOf(match.getScoreB()));
         }
+
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
     }
 
     public void showPopup(View v) {
