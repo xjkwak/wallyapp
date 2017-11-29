@@ -12,6 +12,7 @@ public class Match implements Serializable {
 
     private int nid;
     private String date;
+    private String time;
     private String teamA;
     private String teamB;
     private String arena;
@@ -19,10 +20,13 @@ public class Match implements Serializable {
     private int countB;
     private int scoreA;
     private int scoreB;
-    private ArrayList<String> scores;
+    private ArrayList<Integer> pointsA;
+    private ArrayList<Integer> pointsB;
+    public static final int MAX_SETS = 5;
 
     public Match() {
-        this.scores = new ArrayList<>();
+        pointsA = new ArrayList<>();
+        pointsB = new ArrayList<>();
     }
 
     public Match(int nid, String date, String teamA, String teamB, String arena) {
@@ -34,6 +38,14 @@ public class Match implements Serializable {
         this.arena = arena;
         this.countA = 0;
         this.countB = 0;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setScoreA(int scoreA) {
@@ -50,14 +62,6 @@ public class Match implements Serializable {
 
     public int getScoreB() {
         return scoreB;
-    }
-
-    public ArrayList<String> getScores() {
-        return scores;
-    }
-
-    public void setScores(ArrayList<String> scores) {
-        this.scores = scores;
     }
 
     public int getNid() {
@@ -120,13 +124,39 @@ public class Match implements Serializable {
         return teamA + " vs. " + teamB;
     }
 
+    public ArrayList<Integer> getPointsA() {
+        return pointsA;
+    }
+
+    public void setPointsA(ArrayList<Integer> pointsA) {
+        this.pointsA = pointsA;
+    }
+
+    public ArrayList<Integer> getPointsB() {
+        return pointsB;
+    }
+
+    public void setPointsB(ArrayList<Integer> pointsB) {
+        this.pointsB = pointsB;
+    }
+
     public String toString() {
         return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")]";
 
     }
 
+    public String getPointsAasString() {
+       return pointsA.toString();
+    }
+
+    public String getPointsBasString() {
+        return pointsB.toString();
+    }
+
     public void saveScore() {
-        this.getScores().add(countA+","+countB);
+
+        pointsA.add(countA);
+        pointsB.add(countB);
 
         if (countA > countB) {
             scoreA++;
@@ -134,6 +164,7 @@ public class Match implements Serializable {
         else {
             scoreB++;
         }
+
         countA=0;
         countB=0;
     }

@@ -2,17 +2,14 @@ package siliconwally.net.wallyapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchListViewHolder> {
 
@@ -36,10 +33,8 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     @Override
     public void onBindViewHolder(MatchListViewHolder holder, int position) {
         final Match match = list.get(position);
-        holder.txtDate.setText(match.getDate());
+        holder.txtTime.setText(match.getTime());
         holder.txtTeams.setText(match.getTeams());
-
-        holder.txtTeams.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
     }
 
     @Override
@@ -47,35 +42,38 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
       return this.list.size();
     }
 
-    public class MatchListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private TextView txtDate;
+    public class MatchListViewHolder extends RecyclerView.ViewHolder{
+        private TextView txtTime;
         private TextView txtTeams;
+        private Button arbitrar;
+        private Button ver;
 
         public MatchListViewHolder(View itemView) {
             super(itemView);
-            txtDate = (TextView) itemView.findViewById(R.id.txt_date);
-            txtTeams =( TextView) itemView.findViewById(R.id.txt_teams);
-            itemView.setOnClickListener(this);
-        }
+            txtTime = (TextView) itemView.findViewById(R.id.match_time);
+            txtTeams =( TextView) itemView.findViewById(R.id.match_teams);
+            arbitrar = itemView.findViewById(R.id.arbitrar);
+            ver = itemView.findViewById(R.id.ver);
 
-        @Override
-        public void onClick(View v) {
-            System.out.println("Entra: ");
-            // Below line is just like a safety check, because sometimes holder could be null,
-            // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
-            if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+            arbitrar.setOnClickListener(new View.OnClickListener(){
 
+                @Override
+                public void onClick(View v) {
+                    selectedPosition = getAdapterPosition();
+                    Match match = list.get(selectedPosition);
+                    MatchListAdapter.this.showScoreboard(match);
+                }
+            });
 
-            // Updating old as well as new positions
-            notifyItemChanged(selectedPosition);
-            selectedPosition = getAdapterPosition();
-            System.out.println("Entra: " + selectedPosition);
-            notifyItemChanged(selectedPosition);
+            ver.setOnClickListener(new View.OnClickListener(){
 
-            Match match = list.get(selectedPosition);
-            System.out.println("Seleccionado: " + match);
-            MatchListAdapter.this.showScoreboard(match);
-            // Do your another stuff for your onClick
+                @Override
+                public void onClick(View v) {
+                    selectedPosition = getAdapterPosition();
+                    Match match = list.get(selectedPosition);
+                    MatchListAdapter.this.showScoreboardViewer(match);
+                }
+            });
         }
     }
 
@@ -83,6 +81,11 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("match", match);
         context.startActivity(intent);
+    }
 
+    private void showScoreboardViewer(Match match) {
+        Intent intent = new Intent(context, ScoreboardActivity.class);
+        intent.putExtra("match", match);
+        context.startActivity(intent);
     }
 }

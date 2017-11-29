@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,15 +12,12 @@ import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -38,10 +34,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
+        Bundle extras = getIntent().getExtras();
         if (extras != null) {
             match = (Match) extras.getSerializable("match");
         }
@@ -88,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     private void setSetName() {
-        int sets = match.getScores().size();
+        int sets = match.getPointsA().size();
 
-        if (sets >= 0 && sets < 5) {
+        if (sets >= 0 && sets < Match.MAX_SETS) {
             Resources res = getResources();
             String setsName[] = res.getStringArray(R.array.sets);
             setName.setText(setsName[sets]);
@@ -131,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.teams:
+            case R.id.match_teams:
                 showTeams();
                 return true;
             case R.id.matches:
