@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "908768559502",
+    "firebase_url": "https://wallyapp-bc8b0.firebaseio.com",
+    "project_id": "wallyapp-bc8b0",
+    "storage_bucket": "wallyapp-bc8b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908768559502:android:cac3f0207c9fab21",
+        "android_client_info": {
+          "package_name": "siliconwally.net.wallyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908768559502-lfufre93eth1u09h6s3mio4028v112cj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "siliconwally.net.wallyapp",
+            "certificate_hash": "a9faa977c60a364a755a3fc59160b6c7e6a8c7a3"
+          }
+        },
+        {
+          "client_id": "908768559502-3i74vhr827ovcpsq4brfq7hjd8epvh76.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSFsFXFj0HOiLwvsiCRkul7U67CfNjkqI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908768559502-3i74vhr827ovcpsq4brfq7hjd8epvh76.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
