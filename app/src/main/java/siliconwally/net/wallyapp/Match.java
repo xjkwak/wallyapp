@@ -16,6 +16,7 @@ public class Match implements Serializable {
     private String teamA;
     private String teamB;
     private String arena;
+    private String semana;
     private int countA;
     private int countB;
     private int scoreA;
@@ -38,6 +39,14 @@ public class Match implements Serializable {
         this.arena = arena;
         this.countA = 0;
         this.countB = 0;
+    }
+
+    public String getSemana() {
+        return semana;
+    }
+
+    public void setSemana(String semana) {
+        this.semana = semana;
     }
 
     public String getTime() {
@@ -142,15 +151,6 @@ public class Match implements Serializable {
 
     public String toString() {
         return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")]";
-
-    }
-
-    public String getPointsAasString() {
-       return pointsA.toString();
-    }
-
-    public String getPointsBasString() {
-        return pointsB.toString();
     }
 
     public void saveScore() {
@@ -169,4 +169,13 @@ public class Match implements Serializable {
         countB=0;
     }
 
+    public boolean hasEndSet() {
+        if (scoreA >= 1 && countA >= 15 && Math.abs(countA-countB) >= 2) return true;
+        if (scoreB >= 1 && countB >= 15 && Math.abs(countA-countB) >= 2) return true;
+        return countA >= 25 || countB >= 25 && Math.abs(countA-countB) >= 2;
+    }
+
+    public boolean hasFinished() {
+        return scoreA >= 2 || scoreB >= 2;
+    }
 }

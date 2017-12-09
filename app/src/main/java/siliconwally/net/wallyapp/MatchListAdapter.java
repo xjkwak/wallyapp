@@ -22,6 +22,14 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
         this.list = lista;
     }
 
+    public List<Match> getList() {
+        return list;
+    }
+
+    public void setList(List<Match> list) {
+        this.list = list;
+    }
+
     @Override
     public MatchListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;

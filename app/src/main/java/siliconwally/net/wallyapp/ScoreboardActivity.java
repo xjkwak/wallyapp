@@ -106,7 +106,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         setScoreB.setText(String.valueOf(match.getCountB()));
         detailedScoreA.setText(match.getTeamA());
         detailedScoreB.setText(match.getTeamB());
-        detailedScoreASets.setText(match.getPointsAasString());
-        detailedScoreBSets.setText(match.getPointsBasString());
+        detailedScoreASets.setText(match.getPointsA().toString());
+        detailedScoreBSets.setText(match.getPointsB().toString());
     }
 }

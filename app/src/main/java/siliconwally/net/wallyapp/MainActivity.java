@@ -104,11 +104,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         match.setCountA(teamA);
         match.setCountB(teamB);
 
-        if (teamA >= 15 || teamB >= 15) {
+        if (match.hasEndSet()) {
             match.saveScore();
             setSetName();
             scoreA.setText(String.valueOf(match.getScoreA()));
             scoreB.setText(String.valueOf(match.getScoreB()));
+        }
+
+        if (match.hasFinished()) {
+            scoreTeamA.setClickable(false);
+            scoreTeamB.setClickable(false);
         }
 
         mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);

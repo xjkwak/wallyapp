@@ -6,12 +6,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,6 +29,8 @@ public class MatchesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;
+    private HashMap<String, List<Match>> weekMatches;
+    private MatchListAdapter userListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +55,11 @@ public class MatchesActivity extends AppCompatActivity {
                 List<Match> matches = response.body();
 
                 System.out.println("Recuperó");
-               // MatchesActivity.this.writeMatches(matches);
+                //MatchesActivity.this.writeMatches(matches);
+                initSpinnerWeeks(matches);
                 System.out.println(matches.toString());
 
-                MatchListAdapter userListAdapter = new MatchListAdapter(MatchesActivity.this, matches);
+                userListAdapter = new MatchListAdapter(MatchesActivity.this, matches);
                 MatchesActivity.this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                 MatchesActivity.this.recyclerView.setAdapter(userListAdapter);
 
@@ -65,6 +73,39 @@ public class MatchesActivity extends AppCompatActivity {
                 System.out.println("Falló");
             }
         });
+
+    }
+
+    private void initSpinnerWeeks(List<Match> matches) {
+        ArrayList<String> weeks = new ArrayList<>();
+        weekMatches = new HashMap<>();
+
+        for (Match match: matches) {
+            if (!weekMatches.containsKey(match.getSemana())) {
+                weekMatches.put(match.getSemana(), new ArrayList<Match>());
+                weeks.add(match.getSemana());
+            }
+            weekMatches.get(match.getSemana()).add(match);
+        }
+
+        Spinner spinner = findViewById(R.id.wally_weeks);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, weeks);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                System.out.println("El item es: " + item);
+                userListAdapter.setList(weekMatches.get(item));
+                userListAdapter.notifyDataSetChanged();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
     private void writeMatches(List<Match> matches) {
