@@ -153,26 +153,31 @@ public class Match implements Serializable {
         return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")]";
     }
 
-    public void saveScore() {
-
-        pointsA.add(countA);
-        pointsB.add(countB);
-
+    public void updateScore() {
         if (countA > countB) {
             scoreA++;
-        }
-        else {
+        } else {
             scoreB++;
         }
+    }
 
-        countA=0;
-        countB=0;
+    public void resetCounter() {
+        pointsA.add(countA);
+        pointsB.add(countB);
+        countA = 0;
+        countB = 0;
     }
 
     public boolean hasEndSet() {
-        if (scoreA >= 1 && countA >= 15 && Math.abs(countA-countB) >= 2) return true;
-        if (scoreB >= 1 && countB >= 15 && Math.abs(countA-countB) >= 2) return true;
-        return countA >= 25 || countB >= 25 && Math.abs(countA-countB) >= 2;
+        if (scoreA == 1 && scoreB == 1) return endSet(15);
+        return endSet(25);
+    }
+
+    private boolean endSet(int limit) {
+        int diff = Math.abs(countA-countB);
+
+        if (countA >= limit || countB >= limit) return diff >= 2;
+        return false;
     }
 
     public boolean hasFinished() {
