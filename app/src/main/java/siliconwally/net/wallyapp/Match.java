@@ -169,7 +169,7 @@ public class Match implements Serializable {
     }
 
     public boolean hasEndSet() {
-        if (scoreA == 1 && scoreB == 1) return endSet(15);
+        if (scoreA == 2 && scoreB == 2) return endSet(15);
         return endSet(25);
     }
 
@@ -181,6 +181,6 @@ public class Match implements Serializable {
     }
 
     public boolean hasFinished() {
-        return scoreA >= 2 || scoreB >= 2;
+        return scoreA >= 3 || scoreB >= 3;
     }
 }
