@@ -55,7 +55,7 @@ public class MatchesActivity extends AppCompatActivity {
                 List<Match> matches = response.body();
 
                 System.out.println("Recuperó");
-                //MatchesActivity.this.writeMatches(matches);
+//                MatchesActivity.this.writeMatches(matches);
                 initSpinnerWeeks(matches);
                 System.out.println(matches.toString());
 

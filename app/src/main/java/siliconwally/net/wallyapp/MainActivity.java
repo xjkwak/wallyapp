@@ -91,6 +91,24 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
+    public void reducePointsA(View view) {
+        int teamA = Integer.parseInt(scoreTeamA.getText().toString());
+        if (teamA >= 1) {
+            teamA--;
+            match.setCountA(teamA);
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
+    }
+
+    public void reducePointsB(View view) {
+        int teamB = Integer.parseInt(scoreTeamB.getText().toString());
+        if (teamB >= 1) {
+            teamB--;
+            match.setCountB(teamB);
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
+    }
+
     public void addPoints(View view) {
         Button button = (Button)view;
         String value = button.getText().toString();
