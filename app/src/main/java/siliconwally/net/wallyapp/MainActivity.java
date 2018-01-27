@@ -1,7 +1,9 @@
 package siliconwally.net.wallyapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuInflater;
@@ -192,6 +194,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             public void onResponse(Call<Login> call, Response<Login> response) {
                 System.out.println("response!!!!!!!!!!!!!!!!!!!!!!!");
                 System.out.println(response);
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+                editor.clear();
+                editor.commit();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
