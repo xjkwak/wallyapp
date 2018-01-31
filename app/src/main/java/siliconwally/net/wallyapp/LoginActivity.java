@@ -89,40 +89,23 @@ public class LoginActivity extends AppCompatActivity {
         service.login(data).enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
-                System.out.println("ingresa aqui!!!!!!!");
               if (response.isSuccessful()) {
-                  //SessionManager session = new SessionManager(getApplicationContext());
-                  //session.saveUser(username);
-                  System.out.println("login successfull!!!!");
-                  System.out.println(response.body().getCurrentUser());
-                  System.out.println(response.body());
+                  String userName = response.body().getCurrentUser().get("name").toString();
+                  System.out.println(userName);
+                  SessionManager session = new SessionManager(getApplicationContext());
+                  session.saveUser(userName);
                   Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                   startActivity(i);
               }
               else {
-                  System.out.println("no exitoso");
-                  System.out.println(response);
-                  System.out.println(response.body());
+                  Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG).show();
               }
             }
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
                 System.out.println("FAIL!!!!");
-                System.out.println(t);
-                Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG).show();
             }
         });
-
-        /*if (username.equals("arbitro") && password.equals("1234")) {
-            SessionManager session = new SessionManager(getApplicationContext());
-            session.saveUser(username);
-
-            Intent i = new Intent(this, MatchesActivity.class);
-            startActivity(i);
-        }
-        else {
-            Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG).show();
-        }*/
     }
 }

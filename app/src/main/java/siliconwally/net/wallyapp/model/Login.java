@@ -2,38 +2,40 @@ package siliconwally.net.wallyapp.model;
 
 import org.json.JSONObject;
 
+import java.util.LinkedHashMap;
+
 /**
  * Created by jhamil on 23-01-18.
  */
 
 public class Login {
-    JSONObject currentUser;
-    String csrfToken;
-    String logoutToken;
+    LinkedHashMap current_user;
+    String csrf_token;
+    String logout_token;
 
     public Login() {}
 
-    public JSONObject getCurrentUser() {
-        return currentUser;
+    public LinkedHashMap getCurrentUser() {
+        return current_user;
     }
 
-    public void setCurrentUser(JSONObject currentUser) {
-        this.currentUser = currentUser;
+    public void setCurrentUser(LinkedHashMap currentUser) {
+        this.current_user = currentUser;
     }
 
     public String getCsrfToken() {
-        return csrfToken;
+        return csrf_token;
     }
 
     public void setCsrfToken(String csrfToken) {
-        this.csrfToken = csrfToken;
+        this.csrf_token = csrfToken;
     }
 
     public String getLogoutToken() {
-        return logoutToken;
+        return logout_token;
     }
 
     public void setLogoutToken(String logoutToken) {
-        this.logoutToken = logoutToken;
+        this.logout_token = logoutToken;
     }
 }

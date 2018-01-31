@@ -5,5 +5,5 @@ package siliconwally.net.wallyapp.service;
  */
 
 public class ConstantsRestApi {
-    public static final String BASE_URL = "http://dev-happy-order.pantheonsite.io";
+    public static final String BASE_URL = "https://siliconwally.net";
 }
