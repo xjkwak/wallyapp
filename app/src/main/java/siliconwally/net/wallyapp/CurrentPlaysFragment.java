@@ -1,14 +1,14 @@
 package siliconwally.net.wallyapp;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -17,7 +17,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,37 +25,47 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import siliconwally.net.wallyapp.adapter.ViewPagerAdapter;
 
-public class MatchesActivity extends AppCompatActivity {
+
+
+
+public class CurrentPlaysFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;
     private HashMap<String, List<Match>> weekMatches;
     private MatchListAdapter userListAdapter;
+    private Spinner spinner;
+    private ArrayAdapter<String> arrayAdapter;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private ViewPagerAdapter adapter;
+    public CurrentPlaysFragment() {}
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_matches);
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        viewPager = (ViewPager) findViewById(R.id.viewPagerMatch);
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CurrentPlaysFragment(), "Partidos");
-        adapter.addFragment(new LastPlaysFragment(), "Historico de partidos");
+        View view;
+        view = inflater.inflate(R.layout.fragment_current_plays, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_current_plays);
+        /*userListAdapter = new MatchListAdapter(getActivity(), matches);
+        recyclerView.setAdapter(userListAdapter);*/
 
-        viewPager.setAdapter(adapter);
-        //viewPager.addOnAdapterChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        adapter.notifyDataSetChanged();
+        spinner = view.findViewById(R.id.wally_weeks);
 
-        tabLayout = (TabLayout) findViewById(R.id.appbartabs);
-        tabLayout.setupWithViewPager(viewPager);
-        /*
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        loadData(view);
+        return view;
+    }
+
+    private void loadData(View view) {
+        View views = view;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -78,28 +87,25 @@ public class MatchesActivity extends AppCompatActivity {
 //                MatchesActivity.this.writeMatches(matches);
                 initSpinnerWeeks(matches);
                 System.out.println(matches.toString());
-
-                userListAdapter = new MatchListAdapter(MatchesActivity.this, matches);
-                MatchesActivity.this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-                MatchesActivity.this.recyclerView.setAdapter(userListAdapter);
-
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MatchesActivity.this);
-                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                MatchesActivity.this.recyclerView.setLayoutManager(linearLayoutManager);
             }
 
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
                 System.out.println("Falló");
             }
-        });*/
-
+        });
     }
 
     private void initSpinnerWeeks(List<Match> matches) {
+        if (matches.size() == 0) {
+            return;
+        }
+
+        userListAdapter = new MatchListAdapter(getContext(), matches);
+        recyclerView.setAdapter(userListAdapter);
+
         ArrayList<String> weeks = new ArrayList<>();
         weekMatches = new HashMap<>();
-
         for (Match match: matches) {
             if (!weekMatches.containsKey(match.getSemana())) {
                 weekMatches.put(match.getSemana(), new ArrayList<Match>());
@@ -108,12 +114,10 @@ public class MatchesActivity extends AppCompatActivity {
             weekMatches.get(match.getSemana()).add(match);
         }
 
-        Spinner spinner = findViewById(R.id.wally_weeks);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, weeks);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,   android.R.layout.simple_spinner_item, weeks);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(arrayAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -128,10 +132,4 @@ public class MatchesActivity extends AppCompatActivity {
 
     }
 
-    private void writeMatches(List<Match> matches) {
-
-        for (Match match: matches) {
-            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
-        }
-    }
 }

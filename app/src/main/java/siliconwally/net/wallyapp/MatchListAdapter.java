@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
+
 public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.MatchListViewHolder> {
 
     private List<Match> list;
