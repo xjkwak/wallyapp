@@ -58,8 +58,10 @@ public class MatchesActivity extends AppCompatActivity {
 //                MatchesActivity.this.writeMatches(matches);
                 initSpinnerWeeks(matches);
                 System.out.println(matches.toString());
+                SessionManager session = new SessionManager(getApplicationContext());
+                String userUid = session.getUserId();
 
-                userListAdapter = new MatchListAdapter(MatchesActivity.this, matches);
+                userListAdapter = new MatchListAdapter(MatchesActivity.this, matches, userUid);
                 MatchesActivity.this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
                 MatchesActivity.this.recyclerView.setAdapter(userListAdapter);
 
@@ -71,6 +73,7 @@ public class MatchesActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Match>> call, Throwable t) {
                 System.out.println("Falló");
+
             }
         });
 
