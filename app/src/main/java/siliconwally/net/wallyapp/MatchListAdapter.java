@@ -16,10 +16,12 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     private List<Match> list;
     int selectedPosition = 0;
     private Context context;
+    private String userUid;
 
-    public MatchListAdapter(Context context, List<Match> lista) {
+    public MatchListAdapter(Context context, List<Match> lista, String userUid) {
         this.context = context;
         this.list = lista;
+        this.userUid = userUid;
     }
 
     public List<Match> getList() {
@@ -43,6 +45,13 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
         final Match match = list.get(position);
         holder.txtTime.setText(match.getTime());
         holder.txtTeams.setText(match.getTeams());
+
+        if (!match.getUidArbitro().equals(this.userUid)) {
+            holder.arbitrar.setVisibility(View.INVISIBLE);
+        }
+        else {
+            holder.arbitrar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

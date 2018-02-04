@@ -24,13 +24,15 @@ public class Match implements Serializable {
     private ArrayList<Integer> pointsA;
     private ArrayList<Integer> pointsB;
     public static final int MAX_SETS = 5;
+    private String uidArbitro;
+    private String estado;
 
     public Match() {
         pointsA = new ArrayList<>();
         pointsB = new ArrayList<>();
     }
 
-    public Match(int nid, String date, String teamA, String teamB, String arena) {
+    public Match(int nid, String date, String teamA, String teamB, String arena, String uidArbitro, String estado) {
         this();
         this.nid = nid;
         this.date = date;
@@ -39,6 +41,8 @@ public class Match implements Serializable {
         this.arena = arena;
         this.countA = 0;
         this.countB = 0;
+        this.uidArbitro = uidArbitro;
+        this.estado = estado;
     }
 
     public String getSemana() {
@@ -150,7 +154,7 @@ public class Match implements Serializable {
     }
 
     public String toString() {
-        return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")]";
+        return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")], arbitro=" + this.uidArbitro;
     }
 
     public void updateScore() {
@@ -182,5 +186,21 @@ public class Match implements Serializable {
 
     public boolean hasFinished() {
         return scoreA >= 3 || scoreB >= 3;
+    }
+
+    public String getUidArbitro() {
+        return uidArbitro;
+    }
+
+    public void setUidArbitro(String uidArbitro) {
+        this.uidArbitro = uidArbitro;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
