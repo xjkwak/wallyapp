@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends BaseActivity {
 
     private TextView setName;
     private TextView scoreA;
@@ -168,37 +168,5 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         inflater.inflate(R.menu.main_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.match_teams:
-                showTeams();
-                return true;
-            case R.id.matches:
-                showMatches();
-                return true;
-            case R.id.logout:
-                showLogin();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void showTeams() {
-        Intent intent = new Intent(getApplicationContext(), TeamsActivity.class);
-        startActivity(intent);
-    }
-
-    private void showMatches() {
-        Intent intent = new Intent(getApplicationContext(), MatchesActivity.class);
-        startActivity(intent);
-    }
-
-    private void showLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
     }
 }

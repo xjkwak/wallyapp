@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ScoreboardActivity extends AppCompatActivity {
+public class ScoreboardActivity extends BaseActivity {
 
     private TextView nameA;
     private TextView nameB;
