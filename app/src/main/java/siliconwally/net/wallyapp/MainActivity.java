@@ -31,7 +31,7 @@ import siliconwally.net.wallyapp.service.EndPointApi;
 import siliconwally.net.wallyapp.service.RestApiAdapter;
 
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends BaseActivity {
 
     private TextView setName;
     private TextView scoreA;
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         imageView6 = (ImageView)findViewById(R.id.image6);
         imageView7 = (ImageView)findViewById(R.id.image7);
         imageView8 = (ImageView)findViewById(R.id.image8);
-        String url = "http://siliconwally.net/sites/default/files/styles/thumbnail/public/2017-09/1aac20e1-5d9c-4085-97b3-334e0ed94d30.jpg";
+      /*  String url = "http://siliconwally.net/sites/default/files/styles/thumbnail/public/2017-09/1aac20e1-5d9c-4085-97b3-334e0ed94d30.jpg";
         Picasso.with(getApplicationContext()).load(url).into(imageView1);
         Picasso.with(getApplicationContext()).load(url).into(imageView2);
         Picasso.with(getApplicationContext()).load(url).into(imageView3);
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Picasso.with(getApplicationContext()).load(url).into(imageView5);
         Picasso.with(getApplicationContext()).load(url).into(imageView6);
         Picasso.with(getApplicationContext()).load(url).into(imageView7);
-        Picasso.with(getApplicationContext()).load(url).into(imageView8);
+        Picasso.with(getApplicationContext()).load(url).into(imageView8);*/
 
     }
 
@@ -222,37 +222,4 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popup.setOnMenuItemClickListener(this);
         popup.show();
     }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.match_teams:
-                showTeams();
-                return true;
-            case R.id.matches:
-                showMatches();
-                return true;
-            case R.id.logout:
-                showLogin();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void showTeams() {
-        Intent intent = new Intent(getApplicationContext(), TeamsActivity.class);
-        startActivity(intent);
-    }
-
-    private void showMatches() {
-        Intent intent = new Intent(getApplicationContext(), MatchesActivity.class);
-        startActivity(intent);
-    }
-
-    private void showLogin() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
-    }
-
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.JsonObject;
@@ -75,7 +76,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
+                System.out.println("response!!!!!!!!!!!!!!!!!!!!!!!");
+                System.out.println(response);
+                SessionManager session = new SessionManager(getApplicationContext());
+                session.saveUserName("");
+                session.saveUserId("");
                 clearCookies();
+                LoginManager.getInstance().logOut();
             }
 
             @Override
