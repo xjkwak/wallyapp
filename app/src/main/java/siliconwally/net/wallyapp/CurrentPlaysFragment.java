@@ -65,7 +65,6 @@ public class CurrentPlaysFragment extends Fragment {
     }
 
     private void loadData(View view) {
-        View views = view;
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -76,7 +75,6 @@ public class CurrentPlaysFragment extends Fragment {
         SiliconWally siliconWally = retrofit.create(SiliconWally.class);
 
         Call<List<Match>> matches = siliconWally.matches();
-        final List<Match> list = new ArrayList<>();
 
         matches.enqueue(new Callback<List<Match>>() {
             @Override
@@ -101,17 +99,22 @@ public class CurrentPlaysFragment extends Fragment {
             return;
         }
 
-        userListAdapter = new MatchListAdapter(getContext(), matches);
+        SessionManager session = new SessionManager(getContext());
+        String userUid = session.getUserId();
+
+        userListAdapter = new MatchListAdapter(getContext(), matches, userUid);
         recyclerView.setAdapter(userListAdapter);
 
         ArrayList<String> weeks = new ArrayList<>();
         weekMatches = new HashMap<>();
         for (Match match: matches) {
-            if (!weekMatches.containsKey(match.getSemana())) {
-                weekMatches.put(match.getSemana(), new ArrayList<Match>());
-                weeks.add(match.getSemana());
+            if (!match.getEstado().equals("Finalizado")) {
+                if (!weekMatches.containsKey(match.getSemana())) {
+                    weekMatches.put(match.getSemana(), new ArrayList<Match>());
+                    weeks.add(match.getSemana());
+                }
+                weekMatches.get(match.getSemana()).add(match);
             }
-            weekMatches.get(match.getSemana()).add(match);
         }
 
         arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, weeks);
