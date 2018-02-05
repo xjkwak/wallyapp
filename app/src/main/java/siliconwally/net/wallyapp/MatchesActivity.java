@@ -12,7 +12,7 @@ import java.util.List;
 
 import siliconwally.net.wallyapp.adapter.ViewPagerAdapter;
 
-public class MatchesActivity extends AppCompatActivity {
+public class MatchesActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;

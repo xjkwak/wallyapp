@@ -18,7 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class TeamsActivity extends AppCompatActivity {
+public class TeamsActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;

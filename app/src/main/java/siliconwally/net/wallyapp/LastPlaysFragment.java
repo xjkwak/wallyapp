@@ -93,10 +93,7 @@ public class LastPlaysFragment extends Fragment {
             return;
         }
 
-        SessionManager session = new SessionManager(getContext());
-        String userUid = session.getUserId();
-
-        userListAdapter = new MatchListAdapter(getContext(), matches, userUid);
+        userListAdapter = new MatchListAdapter(getContext(), matches, "0");
         recyclerView.setAdapter(userListAdapter);
 
         ArrayList<String> weeks = new ArrayList<>();
