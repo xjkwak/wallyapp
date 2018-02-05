@@ -1,10 +1,20 @@
-# wallyapp
-A wally scoreboard.
+# WallyApp
+Es una aplicación móvil para registrar puntos a favor de cada equipo en partidos de Wally y permite además ver los puntos en tiempo real.
+Todo esto para el campeonato de Wally "Silicon Wally".
 
-## Features
-### Authentication
-1. Default user/password = arbitro/1234
-2. Facebook authentication: You can use your own facebook account to authenticate in the app.
+## Características
+### Autenticación
+1. Los árbitros pueden autenticarse para poder arbitrar los partidos que tengan asignados.
+2. Cualquier otro usuario puede autenticarse con su cuenta de Facebook.
 
-### Score registration
-Once authenticated you can register the score for both teams while the play is happening.
+### Listado de partidos
+Pueden verse todos los partidos del campeonato por fecha.
+
+### Registro de Puntos
+Los usuarios árbitros pueden elegir un partido que tengan asignado para arbitrar y comenzar a asignar puntos uno por uno a medida que se dan durante el juego.
+
+### Marcador
+Los usuarios autenticados por faceebok y/o árbitros pueden ver el marcador de un partido en tiempo real siempre y cuando haya un árbitro registrando los puntos para el mismo.
+
+### Listado de equipos
+Puede verse un listado de todos los equipos registrados en el campeonato.
