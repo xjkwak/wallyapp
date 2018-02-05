@@ -15,4 +15,7 @@ public interface SiliconWally {
 
     @GET("/api/v1/matches")
     Call<List<Match>> matches();
+
+    @GET("/api/v1/players")
+    Call<List<Player>> players();
 }
