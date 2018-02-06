@@ -78,12 +78,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 System.out.println("response!!!!!!!!!!!!!!!!!!!!!!!");
                 System.out.println(response);
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                 SessionManager session = new SessionManager(getApplicationContext());
                 session.saveUserName("");
                 session.saveUserId("");
-                editor.clear();
-                editor.commit();
+                clearCookies();
                 LoginManager.getInstance().logOut();
             }
 
@@ -102,12 +100,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void enter(View view) {
+        clearCookies();
         String username = ((EditText)findViewById(R.id.username)).getText().toString();
         String password = ((EditText)findViewById(R.id.password)).getText().toString();
 
         RestApiAdapter restApiAdapter = new RestApiAdapter();
         EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
-        System.out.println(username + ": "+ password);
         JsonObject data = new JsonObject();
         data.addProperty("name", username);
         data.addProperty("pass", password);
@@ -119,10 +117,12 @@ public class LoginActivity extends AppCompatActivity {
                   LinkedHashMap currentUser = response.body().getCurrentUser();
                   String userName = currentUser.get("name").toString();
                   String userId = currentUser.get("uid").toString();
+                  String token = response.body().getCsrfToken();
                   System.out.println(userName);
                   SessionManager session = new SessionManager(getApplicationContext());
                   session.saveUserName(userName);
                   session.saveUserId(userId);
+                  session.saveToken(token);
                   Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                   startActivity(i);
               }
@@ -136,5 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("FAIL!!!!");
             }
         });
+    }
+
+    private void clearCookies() {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+        editor.clear();
+        editor.commit();
     }
 }

@@ -17,6 +17,7 @@ public class SessionManager {
     private int PRIVATE_MODE = 0;
     private String KEY_USERNAME = "username";
     private String KEY_USERID = "userId";
+    private String KEY_TOKEN = "token";
 
     // Constructor
     public SessionManager(Context context) {
@@ -35,13 +36,18 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void saveToken(String token) {
+        editor.putString(KEY_TOKEN, token);
+        editor.commit();
+    }
+
     public String getUserName() {
         return pref.getString(KEY_USERNAME, null);
     }
     public String getUserId() {
         return pref.getString(KEY_USERID, null);
     }
-
+    public String getToken() {return pref.getString(KEY_TOKEN, null);}
 
 }
 

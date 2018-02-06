@@ -19,7 +19,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import siliconwally.net.wallyapp.model.MatchNode;
+import siliconwally.net.wallyapp.service.EndPointApi;
+import siliconwally.net.wallyapp.service.RestApiAdapter;
 
 
 public class MainActivity extends BaseActivity {
@@ -34,6 +43,7 @@ public class MainActivity extends BaseActivity {
     private Match match;
     private DatabaseReference mDatabase;
     private ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8;
+    private static final String FINALIZED  = "43";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +165,49 @@ public class MainActivity extends BaseActivity {
             if (match.hasFinished()) {
                 scoreTeamA.setClickable(false);
                 scoreTeamB.setClickable(false);
+                // Call to service
+                RestApiAdapter restApiAdapter = new RestApiAdapter();
+                EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
+                JsonObject data = new JsonObject();
+                int nid = match.getNid();
+                String nodeId = String.valueOf(nid);
+
+                //Create Json Payload
+                JsonObject nidObject = new JsonObject();
+                nidObject.addProperty("value", nodeId);
+                JsonArray arrayNid = new JsonArray();
+                arrayNid.add(nidObject);
+
+                JsonObject type = new JsonObject();
+                type.addProperty("target_id", "partido");
+                JsonArray arrayType = new JsonArray();
+                arrayType.add(type);
+
+
+                JsonObject state = new JsonObject();
+                state.addProperty("target_id", FINALIZED);
+                JsonArray arrayState = new JsonArray();
+                arrayState.add(state);
+
+                data.add("nid", arrayNid);
+                data.add("type", arrayType);
+                data.add("field_partido_estado", arrayState);
+
+                service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
+
+                    @Override
+                    public void onResponse(Call<MatchNode> call, Response<MatchNode> response) {
+                        if (response.isSuccessful()) {
+                            MatchNode node = response.body();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MatchNode> call, Throwable t) {
+                        System.out.println("Error update node!!!!!!");
+                    }
+                });
+
             }
         }
 

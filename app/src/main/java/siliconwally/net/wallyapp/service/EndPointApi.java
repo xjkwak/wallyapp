@@ -9,8 +9,11 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import siliconwally.net.wallyapp.model.Login;
+import siliconwally.net.wallyapp.model.MatchNode;
 
 public interface EndPointApi {
 
@@ -19,4 +22,7 @@ public interface EndPointApi {
 
     @GET("/user/logout?_format=json")
     Call<Login> logout();
+
+    @PATCH("/node/{nid}")
+    Call<MatchNode> updateStateMatch(@Path("nid") int id, @Body JsonObject data);
 }
