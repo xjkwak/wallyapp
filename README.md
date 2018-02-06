@@ -4,7 +4,7 @@ Todo esto para el campeonato de Wally "Silicon Wally".
 
 ## Características
 ### Autenticación
-1. Los árbitros pueden autenticarse para poder arbitrar los partidos que tengan asignados.
+1. Los árbitros pueden autenticarse para poder arbitrar los partidos que tengan asignados. (Usuario de prueba: diego/diego1..)
 2. Cualquier otro usuario puede autenticarse con su cuenta de Facebook.
 
 ### Listado de partidos
