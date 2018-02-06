@@ -36,20 +36,28 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/arbitrar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Arbitrar" />
+                    android:layout_margin="5dp"
+                    android:background="@android:color/holo_green_dark"
+                    android:text="Arbitrar"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:id="@+id/ver"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Ver" />
+                    android:layout_margin="5dp"
+                    android:background="?attr/colorAccent"
+                    android:text="Ver"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
