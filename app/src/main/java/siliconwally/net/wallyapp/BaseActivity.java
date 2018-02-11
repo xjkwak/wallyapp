@@ -62,6 +62,7 @@ public class BaseActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 return true;
             case R.id.logout:
                 showLogin();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                 startActivity(i);
+                finish();
             }
 
             @Override
@@ -125,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                   session.saveUserId(userId);
                   Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                   startActivity(i);
+                  finish();
               }
               else {
                   Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.incorrect_credentials), Toast.LENGTH_LONG).show();
