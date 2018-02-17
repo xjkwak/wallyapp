@@ -121,23 +121,29 @@
                     android:id="@+id/image1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
                     />
 
                 <ImageView
                     android:id="@+id/image2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    />
 
                 <ImageView
                     android:id="@+id/image3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
                     />
 
                 <ImageView
                     android:id="@+id/image4"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    />
 
             </LinearLayout>
         </LinearLayout>
@@ -165,24 +171,29 @@
                     android:id="@+id/image5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
                     />
 
                 <ImageView
                     android:id="@+id/image6"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    />
 
                 <ImageView
                     android:id="@+id/image7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
                     />
 
                 <ImageView
                     android:id="@+id/image8"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    />
             </LinearLayout>
         </LinearLayout>
 

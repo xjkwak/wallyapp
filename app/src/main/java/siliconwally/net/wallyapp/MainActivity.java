@@ -1,9 +1,12 @@
 package siliconwally.net.wallyapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +26,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import siliconwally.net.wallyapp.model.MatchNode;
 import siliconwally.net.wallyapp.service.EndPointApi;
 import siliconwally.net.wallyapp.service.RestApiAdapter;
@@ -94,6 +103,11 @@ public class MainActivity extends BaseActivity {
 
         setSetName();
 
+        createPlayersAvatars();
+    }
+
+    private void createPlayersAvatars() {
+
         imageView1 = (ImageView)findViewById(R.id.image1);
         imageView2 = (ImageView)findViewById(R.id.image2);
         imageView3 = (ImageView)findViewById(R.id.image3);
@@ -102,16 +116,70 @@ public class MainActivity extends BaseActivity {
         imageView6 = (ImageView)findViewById(R.id.image6);
         imageView7 = (ImageView)findViewById(R.id.image7);
         imageView8 = (ImageView)findViewById(R.id.image8);
-      /*  String url = "http://siliconwally.net/sites/default/files/styles/thumbnail/public/2017-09/1aac20e1-5d9c-4085-97b3-334e0ed94d30.jpg";
-        Picasso.with(getApplicationContext()).load(url).into(imageView1);
-        Picasso.with(getApplicationContext()).load(url).into(imageView2);
-        Picasso.with(getApplicationContext()).load(url).into(imageView3);
-        Picasso.with(getApplicationContext()).load(url).into(imageView4);
-        Picasso.with(getApplicationContext()).load(url).into(imageView5);
-        Picasso.with(getApplicationContext()).load(url).into(imageView6);
-        Picasso.with(getApplicationContext()).load(url).into(imageView7);
-        Picasso.with(getApplicationContext()).load(url).into(imageView8);*/
 
+        final String baseUrl = "https://siliconwally.net";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SiliconWally siliconWally = retrofit.create(SiliconWally.class);
+
+        Call<ArrayList<Player>> players = siliconWally.players(match.getNidA());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Player>> call, Response<ArrayList<Player>> response) {
+                final ArrayList<Player> players = response.body();
+               /* Picasso.with(getApplicationContext()).load(baseUrl+players.get(0).getPhoto()).into(imageView1);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(1).getPhoto()).into(imageView2);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(2).getPhoto()).into(imageView3);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(3).getPhoto()).into(imageView4);*/
+                imageView1.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+                        i.putExtra("players", players);
+                        startActivityForResult(i, 1);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Player>> call, Throwable t) {
+                System.out.println("Falló");
+            }
+        });
+
+        players = siliconWally.players(match.getNidB());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Player>> call, Response<ArrayList<Player>> response) {
+                final ArrayList<Player> players = response.body();
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(0).getPhoto()).into(imageView5);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(1).getPhoto()).into(imageView6);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(2).getPhoto()).into(imageView7);
+                Picasso.with(getApplicationContext()).load(baseUrl+players.get(3).getPhoto()).into(imageView8);
+                imageView5.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+                        i.putExtra("players", players);
+                        startActivityForResult(i, 2);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Player>> call, Throwable t) {
+                System.out.println("Falló");
+            }
+        });
     }
 
     private void setSetName() {
@@ -221,5 +289,23 @@ public class MainActivity extends BaseActivity {
         inflater.inflate(R.menu.main_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                HashMap<String, Player> players = (HashMap)data.getSerializableExtra("players");
+                updatePlayerPictures(players);
+                
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
+
+    private void updatePlayerPictures(HashMap<String, Player> players) {
     }
 }
