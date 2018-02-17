@@ -2,6 +2,10 @@ package siliconwally.net.wallyapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaCas;
+import android.preference.PreferenceManager;
+
+import java.util.HashSet;
 
 public class SessionManager {
 
@@ -18,6 +22,8 @@ public class SessionManager {
     private String KEY_USERNAME = "username";
     private String KEY_USERID = "userId";
     private String KEY_TOKEN = "token";
+
+    private HashSet<String> cookies;
 
     // Constructor
     public SessionManager(Context context) {
@@ -49,5 +55,20 @@ public class SessionManager {
     }
     public String getToken() {return pref.getString(KEY_TOKEN, null);}
 
+
+    public void clearSession() {
+        editor.clear();
+        editor.commit();
+    }
+
+    public HashSet<String> getCookies() {
+        HashSet<String> cookies = (HashSet<String>)pref.getStringSet(PREF_NAME, new HashSet<String>());
+        return cookies;
+    }
+
+    public void saveCookies(HashSet<String> cookies) {
+        editor.putStringSet(PREF_NAME, cookies).apply();
+        editor.commit();
+    }
 }
 

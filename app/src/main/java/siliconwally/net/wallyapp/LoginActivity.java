@@ -46,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                System.out.println("On Sucess");
                 SessionManager session = new SessionManager(getApplicationContext());
                 session.saveUserName("Facebook User");
 
@@ -77,11 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
-                System.out.println("response!!!!!!!!!!!!!!!!!!!!!!!");
-                System.out.println(response);
-                SessionManager session = new SessionManager(getApplicationContext());
-                session.saveUserName("");
-                session.saveUserId("");
                 clearCookies();
                 LoginManager.getInstance().logOut();
             }
@@ -141,8 +135,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void clearCookies() {
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-        editor.clear();
-        editor.commit();
+        SessionManager session = new SessionManager(getApplicationContext());
+        session.clearSession();
     }
 }
