@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/nameA"
@@ -34,13 +35,20 @@
             android:textAlignment="textEnd" />
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="1sp"
+        android:background="@color/primary_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/setScoreA"
@@ -60,7 +68,12 @@
             android:textAlignment="textEnd" />
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="1sp"
+        android:background="@color/primary_text" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,46 +83,49 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:id="@+id/llDetailA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/detailedScoreA"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="30.0"
                 android:text="JalaSoft"
-                android:textSize="20sp"/>
+                android:textSize="20sp"/>-->
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/detailedScoreASets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="70.0"
                 android:text="10, 15, 20"
-                android:textSize="20sp"/>
+                android:textSize="20sp"/>-->
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
+            android:id="@+id/llDetailB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<TextView
                 android:id="@+id/detailedScoreB"
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="30.0"
                 android:text="Truextend"
-                android:textSize="20sp"/>
+                android:textSize="20sp"/>-->
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/detailedScoreBSets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="70.0"
                 android:text="10, 15, 20"
-                android:textSize="20sp"/>
+                android:textSize="20sp"/>-->
         </LinearLayout>
 
     </LinearLayout>
