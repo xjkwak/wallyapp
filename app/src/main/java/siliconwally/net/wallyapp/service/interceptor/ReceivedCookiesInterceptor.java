@@ -13,6 +13,7 @@ import java.util.HashSet;
 
 import okhttp3.Interceptor;
 import okhttp3.Response;
+import siliconwally.net.wallyapp.SessionManager;
 
 public class ReceivedCookiesInterceptor implements Interceptor {
     private Context context;
@@ -24,15 +25,13 @@ public class ReceivedCookiesInterceptor implements Interceptor {
         Response originalResponse = chain.proceed(chain.request());
 
         if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-            HashSet<String> cookies = (HashSet<String>) PreferenceManager.getDefaultSharedPreferences(context).getStringSet("PREF_COOKIES", new HashSet<String>());
-
+            SessionManager session = new SessionManager(context);
+            HashSet<String> cookies = session.getCookies();
             for (String header : originalResponse.headers("Set-Cookie")) {
                 cookies.add(header);
             }
 
-            SharedPreferences.Editor memes = PreferenceManager.getDefaultSharedPreferences(context).edit();
-            memes.putStringSet("PREF_COOKIES", cookies).apply();
-            memes.commit();
+            session.saveCookies(cookies);
         }
 
         return originalResponse;

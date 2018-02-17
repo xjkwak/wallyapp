@@ -20,7 +20,6 @@ import siliconwally.net.wallyapp.SessionManager;
  * Your implementation on how to get the Preferences may ary, but this will work 99% of the time.
  */
 public class AddCookiesInterceptor implements Interceptor {
-    public static final String PREF_COOKIES = "PREF_COOKIES";
     private Context context;
 
     public AddCookiesInterceptor(Context context) {
@@ -31,13 +30,14 @@ public class AddCookiesInterceptor implements Interceptor {
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Request.Builder builder = chain.request().newBuilder();
 
-        HashSet<String> preferences = (HashSet<String>) PreferenceManager.getDefaultSharedPreferences(context).getStringSet(PREF_COOKIES, new HashSet<String>());
+        SessionManager session = new SessionManager(this.context);
+        HashSet<String> preferences = session.getCookies();
 
         for (String cookie : preferences) {
             builder.addHeader("Cookie", cookie);
         }
         builder.addHeader("Content-Type", "application/json");
-        SessionManager session = new SessionManager(this.context);
+
         String token = session.getToken();
         if (token != null) {
             builder.addHeader("X-CSRF-Token", token);
