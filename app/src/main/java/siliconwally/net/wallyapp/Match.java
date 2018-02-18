@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by cristian on 20-11-17.
- */
-
 public class Match implements Serializable {
 
     private int nid;
@@ -26,16 +22,12 @@ public class Match implements Serializable {
     public static final int MAX_SETS = 5;
     private String uidArbitro;
     private String estado;
-    private ArrayList<Player> playersA;
-    private ArrayList<Player> playersB;
     private int nidA;
     private int nidB;
 
     public Match() {
         pointsA = new ArrayList<>();
         pointsB = new ArrayList<>();
-        playersA = new ArrayList<>();
-        playersB = new ArrayList<>();
     }
 
     public Match(int nid, String date, String teamA, String teamB, String arena, String uidArbitro, String estado) {
@@ -65,22 +57,6 @@ public class Match implements Serializable {
 
     public void setNidB(int nidB) {
         this.nidB = nidB;
-    }
-
-    public ArrayList<Player> getPlayersA() {
-        return playersA;
-    }
-
-    public void setPlayersA(ArrayList<Player> playersA) {
-        this.playersA = playersA;
-    }
-
-    public ArrayList<Player> getPlayersB() {
-        return playersB;
-    }
-
-    public void setPlayersB(ArrayList<Player> playersB) {
-        this.playersB = playersB;
     }
 
     public String getSemana() {
@@ -218,8 +194,7 @@ public class Match implements Serializable {
     private boolean endSet(int limit) {
         int diff = Math.abs(countA-countB);
 
-        if (countA >= limit || countB >= limit) return diff >= 2;
-        return false;
+        return (countA >= limit || countB >= limit) && diff >= 2;
     }
 
     public boolean hasFinished() {

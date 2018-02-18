@@ -3,7 +3,6 @@ package siliconwally.net.wallyapp;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +13,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerListViewHolder> {
 
     private List<Player> list;
-    int selectedPosition = 0;
+    private int selectedPosition = 0;
     private Context context;
-    private Map<String, Player> selectedPlayers;
 
     public PlayerListAdapter(List<Player> lista, Context context) {
         this.list = lista;
         this.context = context;
-        this.selectedPlayers = new HashMap<>();
     }
 
     @Override
@@ -44,29 +40,15 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         final Player player = list.get(position);
         holder.name.setText(player.getName());
         holder.number.setText(player.getNumber());
-        Picasso.with(context).load("http://siliconwally.net/"+player.getPhoto()).into(holder.photo);
+        Picasso.with(context).load("https://siliconwally.net/"+player.getPhoto()).into(holder.photo);
+        holder.enable.setChecked(player.isEnabled());
 
         holder.number.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
-
-        if (holder.enable.isChecked()) {
-            this.selectedPlayers.put(player.getName(), player);
-        }
-        else {
-            this.selectedPlayers.remove(player.getName());
-        }
-        System.out.println("mapa:");
-        System.out.println(this.selectedPlayers);
-
     }
 
     @Override
     public int getItemCount() {
       return this.list.size();
-    }
-
-    public Map<String, Player> getSelectedPlayers() {
-
-        return this.selectedPlayers;
     }
 
     public class PlayerListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -77,10 +59,10 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 
         public PlayerListViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            number =( TextView) itemView.findViewById(R.id.number);
-            photo = (ImageView)itemView.findViewById(R.id.photo);
-            enable = (Switch) itemView.findViewById(R.id.enable);
+            name = itemView.findViewById(R.id.name);
+            number = itemView.findViewById(R.id.number);
+            photo = itemView.findViewById(R.id.photo);
+            enable = itemView.findViewById(R.id.enable);
             enable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -96,7 +78,6 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
             // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
             if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
-
             // Updating old as well as new positions
             notifyItemChanged(selectedPosition);
             selectedPosition = getAdapterPosition();
@@ -108,12 +89,5 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
     private void addSelectedPlayer(int adapterPosition, boolean isChecked) {
         Player player = this.list.get(adapterPosition);
         player.setEnabled(isChecked);
-
-        if (isChecked) {
-            this.getSelectedPlayers().put(String.valueOf(player.getNid()), player);
-        }
-        else {
-            this.getSelectedPlayers().remove(player.getNid());
-        }
     }
 }
