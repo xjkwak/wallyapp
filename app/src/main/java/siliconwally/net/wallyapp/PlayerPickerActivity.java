@@ -26,7 +26,7 @@ public class PlayerPickerActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;
-    private List<Player> players;
+    private ArrayList<Player> players;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +35,13 @@ public class PlayerPickerActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            players = (List<Player>) extras.getSerializable("players");
+            players = (ArrayList<Player>)extras.getSerializable("players");
         }
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         PlayerListAdapter teamListAdapter = new PlayerListAdapter(players, PlayerPickerActivity.this.getApplicationContext());
-        PlayerPickerActivity.this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        PlayerPickerActivity.this.recyclerView = findViewById(R.id.recyclerView);
         PlayerPickerActivity.this.recyclerView.setAdapter(teamListAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(PlayerPickerActivity.this);
@@ -50,9 +50,8 @@ public class PlayerPickerActivity extends AppCompatActivity {
     }
 
     public void selectPlayer(View view) {
-        Map<String, Player> selectedPlayers = ((PlayerListAdapter) this.recyclerView.getAdapter()).getSelectedPlayers();
         Intent returnIntent = getIntent();
-        returnIntent.putExtra("players", (HashMap)selectedPlayers);
+        returnIntent.putExtra("players", this.players);
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }

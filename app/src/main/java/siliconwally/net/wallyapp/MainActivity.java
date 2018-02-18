@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.annotation.NonNull;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -27,8 +24,6 @@ import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,8 +46,11 @@ public class MainActivity extends BaseActivity {
     private Button scoreTeamB;
     private Match match;
     private DatabaseReference mDatabase;
-    private ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8;
+    private ImageView imageViewA[];
+    private ImageView imageViewB[];
     private static final String FINALIZED  = "43";
+    private ArrayList<Player> playersA;
+    private ArrayList<Player> playersB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +71,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 match = dataSnapshot.getValue(Match.class);
-                scoreTeamA.setText(String.valueOf(match.getCountA()));
-                scoreTeamB.setText(String.valueOf(match.getCountB()));
-                System.out.println(match);
+                if (match != null ) {
+                    scoreTeamA.setText(String.valueOf(match.getCountA()));
+                    scoreTeamB.setText(String.valueOf(match.getCountB()));
+                }
             }
 
             @Override
@@ -85,7 +84,7 @@ public class MainActivity extends BaseActivity {
         });
 
 
-        Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
+        Chronometer chronometer = findViewById(R.id.chronometer);
         chronometer.start();
         SessionManager session = new SessionManager(getApplicationContext());
         String username = session.getUserName();
@@ -108,14 +107,20 @@ public class MainActivity extends BaseActivity {
 
     private void createPlayersAvatars() {
 
-        imageView1 = (ImageView)findViewById(R.id.image1);
-        imageView2 = (ImageView)findViewById(R.id.image2);
-        imageView3 = (ImageView)findViewById(R.id.image3);
-        imageView4 = (ImageView)findViewById(R.id.image4);
-        imageView5 = (ImageView)findViewById(R.id.image5);
-        imageView6 = (ImageView)findViewById(R.id.image6);
-        imageView7 = (ImageView)findViewById(R.id.image7);
-        imageView8 = (ImageView)findViewById(R.id.image8);
+        imageViewA = new ImageView[4];
+        imageViewB = new ImageView[4];
+
+        imageViewA[0] = findViewById(R.id.image1);
+        imageViewA[1] = findViewById(R.id.image2);
+        imageViewA[2] = findViewById(R.id.image3);
+        imageViewA[3] = findViewById(R.id.image4);
+
+        imageViewB[0] = findViewById(R.id.image5);
+        imageViewB[1] = findViewById(R.id.image6);
+        imageViewB[2] = findViewById(R.id.image7);
+        imageViewB[3] = findViewById(R.id.image8);
+
+
 
         final String baseUrl = "https://siliconwally.net";
         Retrofit retrofit = new Retrofit.Builder()
@@ -129,26 +134,12 @@ public class MainActivity extends BaseActivity {
 
         players.enqueue(new Callback<ArrayList<Player>>() {
             @Override
-            public void onResponse(Call<ArrayList<Player>> call, Response<ArrayList<Player>> response) {
-                final ArrayList<Player> players = response.body();
-               /* Picasso.with(getApplicationContext()).load(baseUrl+players.get(0).getPhoto()).into(imageView1);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(1).getPhoto()).into(imageView2);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(2).getPhoto()).into(imageView3);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(3).getPhoto()).into(imageView4);*/
-                imageView1.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
-                        i.putExtra("players", players);
-                        startActivityForResult(i, 1);
-
-                    }
-                });
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersA = response.body();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Player>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
                 System.out.println("Falló");
             }
         });
@@ -157,26 +148,12 @@ public class MainActivity extends BaseActivity {
 
         players.enqueue(new Callback<ArrayList<Player>>() {
             @Override
-            public void onResponse(Call<ArrayList<Player>> call, Response<ArrayList<Player>> response) {
-                final ArrayList<Player> players = response.body();
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(0).getPhoto()).into(imageView5);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(1).getPhoto()).into(imageView6);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(2).getPhoto()).into(imageView7);
-                Picasso.with(getApplicationContext()).load(baseUrl+players.get(3).getPhoto()).into(imageView8);
-                imageView5.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
-                        i.putExtra("players", players);
-                        startActivityForResult(i, 2);
-
-                    }
-                });
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersB = response.body();
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Player>> call, Throwable t) {
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
                 System.out.println("Falló");
             }
         });
@@ -264,14 +241,14 @@ public class MainActivity extends BaseActivity {
                 service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
 
                     @Override
-                    public void onResponse(Call<MatchNode> call, Response<MatchNode> response) {
+                    public void onResponse(@NonNull Call<MatchNode> call, @NonNull Response<MatchNode> response) {
                         if (response.isSuccessful()) {
                             MatchNode node = response.body();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<MatchNode> call, Throwable t) {
+                    public void onFailure(@NonNull Call<MatchNode> call, @NonNull Throwable t) {
                         System.out.println("Error update node!!!!!!");
                     }
                 });
@@ -296,16 +273,45 @@ public class MainActivity extends BaseActivity {
 
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
-                HashMap<String, Player> players = (HashMap)data.getSerializableExtra("players");
-                updatePlayerPictures(players);
-                
+                this.playersA = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersA, imageViewA);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
+        }
+        else if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                this.playersB = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersB, imageViewB);
             }
         }
     }//onActivityResult
 
-    private void updatePlayerPictures(HashMap<String, Player> players) {
+    private void updatePlayerPictures(ArrayList<Player> players, ImageView imageView[]) {
+
+        int index = 0;
+
+        final String baseUrl = "https://siliconwally.net";
+
+        for(Player player: players) {
+            if (player.isEnabled() && index < imageView.length) {
+                Picasso.with(getApplicationContext()).load(baseUrl+player.getPhoto()).into(imageView[index]);
+                index++;
+            }
+        }
+
+        for (int i = index; i < imageView.length; i++) {
+            imageView[i].setImageDrawable(getResources().getDrawable(R.drawable.default_player));
+        }
+    }
+
+    public void selectPlayersTeamA(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersA);
+        startActivityForResult(i, 1);
+    }
+
+    public void selectPlayersTeamB(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersB);
+        startActivityForResult(i, 2);
     }
 }

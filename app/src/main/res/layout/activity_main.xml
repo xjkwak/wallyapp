@@ -24,20 +24,21 @@
             android:id="@+id/setScoreA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0" />
+            android:text="@string/defaultPoints" />
 
         <ImageButton
             android:id="@+id/switchSidesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="showPopup"
+            android:contentDescription="@string/desc"
             app:srcCompat="@drawable/menu_hamburguer" />
 
         <TextView
             android:id="@+id/setScoreB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0" />
+            android:text="@string/defaultPoints" />
 
         <EditText
             android:id="@+id/teamNameB"
@@ -58,7 +59,7 @@
             android:id="@+id/setName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No set" />
+            android:text="@string/noset" />
 
         <Chronometer
             android:id="@+id/chronometer"
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="addPoints"
-                android:text="0"
+                android:text="@string/defaultPoints"
                 android:textSize="60sp"
                 android:textStyle="bold" />
             <LinearLayout
@@ -122,6 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -129,6 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -136,6 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -143,6 +147,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+                <ImageButton
+                    android:id="@+id/selectPlayersTeamA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_players"
+                    android:onClick="selectPlayersTeamA"
+                    android:contentDescription="@string/desc"
                     />
 
             </LinearLayout>
@@ -159,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="addPoints"
-                android:text="0"
+                android:text="@string/defaultPoints"
                 android:textSize="60sp"
                 android:textStyle="bold" />
             <LinearLayout
@@ -172,6 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -179,6 +193,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -186,6 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
                     />
 
                 <ImageView
@@ -193,6 +209,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+                <ImageButton
+                    android:id="@+id/selectPlayersTeamB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_players"
+                    android:onClick="selectPlayersTeamB"
+                    android:contentDescription="@string/desc"
                     />
             </LinearLayout>
         </LinearLayout>

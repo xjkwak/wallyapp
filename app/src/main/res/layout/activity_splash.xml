@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher_web"
         android:id="@+id/ivSplash"
+        android:contentDescription="@string/desc"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 

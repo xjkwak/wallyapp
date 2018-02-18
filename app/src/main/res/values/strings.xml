@@ -4,6 +4,7 @@
     <string name="app_name">WallyApp</string>
     <string name="defaultNameTeamA">Team A</string>
     <string name="defaultNameTeamB">Team B</string>
+    <string name="defaultPoints">0</string>
     <string name="title_activity_login">WallyApp - Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -14,6 +15,9 @@
     <string name="teams">Teams</string>
     <string name="matches">Matches</string>
     <string name="logout">Logout</string>
+    <string name="noset">No Set</string>
+    <string name="desc">Description</string>
+    <string name="empty">Empty</string>
     <string-array name="sets">
         <item>First Set</item>
         <item>Second Set</item>
