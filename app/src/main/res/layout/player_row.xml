@@ -16,6 +16,7 @@
 
             <ImageView
                 android:id="@+id/photo"
+                android:contentDescription="@string/desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -23,15 +24,16 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"/>
+                android:text="@string/empty"/>
 
             <TextView
                 android:id="@+id/number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"/>
+                android:text="@string/empty"/>
 
             <Switch
+                android:id="@+id/enable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

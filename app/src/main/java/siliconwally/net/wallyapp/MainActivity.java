@@ -1,11 +1,11 @@
 package siliconwally.net.wallyapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -23,9 +23,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import siliconwally.net.wallyapp.model.MatchNode;
 import siliconwally.net.wallyapp.service.EndPointApi;
 import siliconwally.net.wallyapp.service.RestApiAdapter;
@@ -42,8 +46,11 @@ public class MainActivity extends BaseActivity {
     private Button scoreTeamB;
     private Match match;
     private DatabaseReference mDatabase;
-    private ImageView imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8;
+    private ImageView imageViewA[];
+    private ImageView imageViewB[];
     private static final String FINALIZED  = "43";
+    private ArrayList<Player> playersA;
+    private ArrayList<Player> playersB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +71,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 match = dataSnapshot.getValue(Match.class);
-                scoreTeamA.setText(String.valueOf(match.getCountA()));
-                scoreTeamB.setText(String.valueOf(match.getCountB()));
-                System.out.println(match);
+                if (match != null ) {
+                    scoreTeamA.setText(String.valueOf(match.getCountA()));
+                    scoreTeamB.setText(String.valueOf(match.getCountB()));
+                }
             }
 
             @Override
@@ -76,7 +84,7 @@ public class MainActivity extends BaseActivity {
         });
 
 
-        Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
+        Chronometer chronometer = findViewById(R.id.chronometer);
         chronometer.start();
         SessionManager session = new SessionManager(getApplicationContext());
         String username = session.getUserName();
@@ -94,24 +102,61 @@ public class MainActivity extends BaseActivity {
 
         setSetName();
 
-        imageView1 = (ImageView)findViewById(R.id.image1);
-        imageView2 = (ImageView)findViewById(R.id.image2);
-        imageView3 = (ImageView)findViewById(R.id.image3);
-        imageView4 = (ImageView)findViewById(R.id.image4);
-        imageView5 = (ImageView)findViewById(R.id.image5);
-        imageView6 = (ImageView)findViewById(R.id.image6);
-        imageView7 = (ImageView)findViewById(R.id.image7);
-        imageView8 = (ImageView)findViewById(R.id.image8);
-      /*  String url = "http://siliconwally.net/sites/default/files/styles/thumbnail/public/2017-09/1aac20e1-5d9c-4085-97b3-334e0ed94d30.jpg";
-        Picasso.with(getApplicationContext()).load(url).into(imageView1);
-        Picasso.with(getApplicationContext()).load(url).into(imageView2);
-        Picasso.with(getApplicationContext()).load(url).into(imageView3);
-        Picasso.with(getApplicationContext()).load(url).into(imageView4);
-        Picasso.with(getApplicationContext()).load(url).into(imageView5);
-        Picasso.with(getApplicationContext()).load(url).into(imageView6);
-        Picasso.with(getApplicationContext()).load(url).into(imageView7);
-        Picasso.with(getApplicationContext()).load(url).into(imageView8);*/
+        createPlayersAvatars();
+    }
 
+    private void createPlayersAvatars() {
+
+        imageViewA = new ImageView[4];
+        imageViewB = new ImageView[4];
+
+        imageViewA[0] = findViewById(R.id.image1);
+        imageViewA[1] = findViewById(R.id.image2);
+        imageViewA[2] = findViewById(R.id.image3);
+        imageViewA[3] = findViewById(R.id.image4);
+
+        imageViewB[0] = findViewById(R.id.image5);
+        imageViewB[1] = findViewById(R.id.image6);
+        imageViewB[2] = findViewById(R.id.image7);
+        imageViewB[3] = findViewById(R.id.image8);
+
+
+
+        final String baseUrl = "https://siliconwally.net";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        SiliconWally siliconWally = retrofit.create(SiliconWally.class);
+
+        Call<ArrayList<Player>> players = siliconWally.players(match.getNidA());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersA = response.body();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
+                System.out.println("Falló");
+            }
+        });
+
+        players = siliconWally.players(match.getNidB());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersB = response.body();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
+                System.out.println("Falló");
+            }
+        });
     }
 
     private void setSetName() {
@@ -196,14 +241,14 @@ public class MainActivity extends BaseActivity {
                 service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
 
                     @Override
-                    public void onResponse(Call<MatchNode> call, Response<MatchNode> response) {
+                    public void onResponse(@NonNull Call<MatchNode> call, @NonNull Response<MatchNode> response) {
                         if (response.isSuccessful()) {
                             MatchNode node = response.body();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<MatchNode> call, Throwable t) {
+                    public void onFailure(@NonNull Call<MatchNode> call, @NonNull Throwable t) {
                         System.out.println("Error update node!!!!!!");
                     }
                 });
@@ -221,5 +266,52 @@ public class MainActivity extends BaseActivity {
         inflater.inflate(R.menu.main_menu, popup.getMenu());
         popup.setOnMenuItemClickListener(this);
         popup.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                this.playersA = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersA, imageViewA);
+            }
+        }
+        else if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                this.playersB = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersB, imageViewB);
+            }
+        }
+    }//onActivityResult
+
+    private void updatePlayerPictures(ArrayList<Player> players, ImageView imageView[]) {
+
+        int index = 0;
+
+        final String baseUrl = "https://siliconwally.net";
+
+        for(Player player: players) {
+            if (player.isEnabled() && index < imageView.length) {
+                Picasso.with(getApplicationContext()).load(baseUrl+player.getPhoto()).into(imageView[index]);
+                index++;
+            }
+        }
+
+        for (int i = index; i < imageView.length; i++) {
+            imageView[i].setImageDrawable(getResources().getDrawable(R.drawable.default_player));
+        }
+    }
+
+    public void selectPlayersTeamA(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersA);
+        startActivityForResult(i, 1);
+    }
+
+    public void selectPlayersTeamB(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersB);
+        startActivityForResult(i, 2);
     }
 }

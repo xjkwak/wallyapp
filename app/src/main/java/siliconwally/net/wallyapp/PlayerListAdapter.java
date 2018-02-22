@@ -6,17 +6,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerListViewHolder> {
 
     private List<Player> list;
-    int selectedPosition = 0;
+    private int selectedPosition = 0;
     private Context context;
 
     public PlayerListAdapter(List<Player> lista, Context context) {
@@ -37,7 +40,8 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         final Player player = list.get(position);
         holder.name.setText(player.getName());
         holder.number.setText(player.getNumber());
-        Picasso.with(context).load("http://siliconwally.net/"+player.getPhoto()).into(holder.photo);
+        Picasso.with(context).load("https://siliconwally.net/"+player.getPhoto()).into(holder.photo);
+        holder.enable.setChecked(player.isEnabled());
 
         holder.number.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
     }
@@ -51,29 +55,39 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         private TextView name;
         private TextView number;
         private ImageView photo;
+        private Switch enable;
 
         public PlayerListViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
-            number =( TextView) itemView.findViewById(R.id.number);
-            photo = (ImageView)itemView.findViewById(R.id.photo);
+            name = itemView.findViewById(R.id.name);
+            number = itemView.findViewById(R.id.number);
+            photo = itemView.findViewById(R.id.photo);
+            enable = itemView.findViewById(R.id.enable);
+            enable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    PlayerListAdapter.this.addSelectedPlayer(getAdapterPosition(), isChecked);
+                }
+            });
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            System.out.println("Entra: ");
             // Below line is just like a safety check, because sometimes holder could be null,
             // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
             if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
-
             // Updating old as well as new positions
             notifyItemChanged(selectedPosition);
             selectedPosition = getAdapterPosition();
-            System.out.println("Entra: " + selectedPosition);
             notifyItemChanged(selectedPosition);
             // Do your another stuff for your onClick
         }
+    }
+
+    private void addSelectedPlayer(int adapterPosition, boolean isChecked) {
+        Player player = this.list.get(adapterPosition);
+        player.setEnabled(isChecked);
     }
 }
