@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginLeft="15sp"
-    android:layout_marginRight="15sp"
+    android:layout_marginLeft="20sp"
+    android:layout_marginRight="20sp"
     tools:context="siliconwally.net.wallyapp.ScoreboardActivity">
 
     <LinearLayout
@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="40.0"
             android:text="JalaSoft"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="184dp" />
 
         <TextView
             android:id="@+id/nameB"
@@ -53,19 +54,21 @@
         <TextView
             android:id="@+id/setScoreA"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40.0"
+            android:layout_height="191dp"
+            android:layout_weight="35.0"
             android:text="10"
-            android:textSize="150sp"/>
+            android:textSize="150sp"
+            tools:layout_editor_absoluteX="184dp" />
 
         <TextView
             android:id="@+id/setScoreB"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40.0"
+            android:layout_height="match_parent"
+            android:layout_weight="35.0"
             android:text="20"
+            android:textAlignment="textEnd"
             android:textSize="150sp"
-            android:textAlignment="textEnd" />
+            tools:layout_editor_absoluteX="276dp" />
 
     </LinearLayout>
     <View
@@ -82,51 +85,56 @@
         android:layout_alignParentRight="true"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/llDetailA"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow
+                android:id="@+id/llDetailA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <!--<TextView
-                android:id="@+id/detailedScoreA"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="30.0"
-                android:text="JalaSoft"
-                android:textSize="20sp"/>-->
+                <!--<TextView
+                    android:id="@+id/detailedScoreA"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30.0"
+                    android:text="JalaSoft"
+                    android:textSize="20sp"/>-->
 
-            <!--<TextView
-                android:id="@+id/detailedScoreASets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="70.0"
-                android:text="10, 15, 20"
-                android:textSize="20sp"/>-->
-        </LinearLayout>
+                <!--<TextView
+                    android:id="@+id/detailedScoreASets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70.0"
+                    android:text="10, 15, 20"
+                    android:textSize="20sp"/>-->
+            </TableRow>
 
 
-        <LinearLayout
-            android:id="@+id/llDetailB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <!--<TextView
-                android:id="@+id/detailedScoreB"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="30.0"
-                android:text="Truextend"
-                android:textSize="20sp"/>-->
+            <TableRow
+                android:id="@+id/llDetailB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <!--<TextView
+                    android:id="@+id/detailedScoreB"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30.0"
+                    android:text="Truextend"
+                    android:textSize="20sp"/>-->
 
-            <!--<TextView
-                android:id="@+id/detailedScoreBSets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="70.0"
-                android:text="10, 15, 20"
-                android:textSize="20sp"/>-->
-        </LinearLayout>
+                <!--<TextView
+                    android:id="@+id/detailedScoreBSets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70.0"
+                    android:text="10, 15, 20"
+                    android:textSize="20sp"/>-->
+            </TableRow>
+
+        </TableLayout>
 
     </LinearLayout>
 

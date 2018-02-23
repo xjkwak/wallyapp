@@ -2,14 +2,19 @@ package siliconwally.net.wallyapp;
 
 import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -119,38 +124,35 @@ public class ScoreboardActivity extends BaseActivity {
 
         //detailedScoreASets.setText(match.getPointsA().toString());
 
-        LinearLayout llDetailA = (LinearLayout) findViewById(R.id.llDetailA);
+        TableRow llDetailA = (TableRow) findViewById(R.id.llDetailA);
         fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA());
 
         //detailedScoreBSets.setText(match.getPointsB().toString());
-        LinearLayout llDetailB = (LinearLayout) findViewById(R.id.llDetailB);
+        TableRow llDetailB = (TableRow) findViewById(R.id.llDetailB);
         fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB());
     }
 
-    private void fillDetailScore(LinearLayout linear, ArrayList<Integer> list, String team) {
+    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team) {
         TextView nameTeam = new TextView(this);
         nameTeam.setText(team);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.TEXT_ALIGNMENT_GRAVITY);
-        llp.setMargins(0,0,20,0);
-        llp.weight = 1.0f;
-        nameTeam.setLayoutParams(llp);
-        nameTeam.setTextSize(20);
-        nameTeam.setGravity(Gravity.LEFT);
-        nameTeam.setPadding(0,0,20,0);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x/2;
+        TableRow.LayoutParams ltw = new TableRow.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ltw.setMargins(0,0,20,0);
+
+        nameTeam.setLayoutParams(ltw);
+        nameTeam.setPadding(0,0,10,0);
+        nameTeam.setTextSize(22);
+        nameTeam.setMaxLines(1);
         linear.addView(nameTeam);
         for (int item: list) {
             TextView text = new TextView(this);
             text.setText(String.valueOf(item));
-            /*LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.TEXT_ALIGNMENT_GRAVITY);
-            llp.setMargins(0,0,20,0);
-            llp.weight = 1;*/
-            text.setLayoutParams(llp);
-            text.setTextSize(20);
-            text.setGravity(Gravity.LEFT);
-            text.setBackgroundColor(Color.CYAN);
-            text.setPadding(20,0,10,0);
+            //text.setBackgroundColor(Color.CYAN);
+            text.setPadding(5,0,25,0);
+            text.setTextSize(22);
             linear.addView(text);
         }
     }
