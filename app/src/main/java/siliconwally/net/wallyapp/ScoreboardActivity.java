@@ -1,10 +1,21 @@
 package siliconwally.net.wallyapp;
 
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.media.MediaPlayer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -13,12 +24,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class ScoreboardActivity extends BaseActivity {
 
     private TextView nameA;
     private TextView nameB;
     private TextView setScoreA;
     private TextView setScoreB;
+
+    private TextView setA;
+    private TextView setB;
     private TextView detailedScoreA;
     private TextView detailedScoreB;
     private TextView detailedScoreASets;
@@ -48,10 +64,17 @@ public class ScoreboardActivity extends BaseActivity {
         nameB = findViewById(R.id.nameB);
         setScoreA = findViewById(R.id.setScoreA);
         setScoreB = findViewById(R.id.setScoreB);
-        detailedScoreA = findViewById(R.id.detailedScoreA);
-        detailedScoreB = findViewById(R.id.detailedScoreB);
-        detailedScoreASets = findViewById(R.id.detailedScoreASets);
-        detailedScoreBSets = findViewById(R.id.detailedScoreBSets);
+
+        setA = findViewById(R.id.textViewSetA);
+        setB = findViewById(R.id.textViewSetB);
+
+
+
+        //detailedScoreA = findViewById(R.id.detailedScoreA);
+        //detailedScoreB = findViewById(R.id.detailedScoreB);
+
+        //detailedScoreASets = findViewById(R.id.detailedScoreASets);
+        //detailedScoreBSets = findViewById(R.id.detailedScoreBSets);
 
 //        updateScoreboard();
 
@@ -104,9 +127,47 @@ public class ScoreboardActivity extends BaseActivity {
         nameB.setText(match.getTeamB());
         setScoreA.setText(String.valueOf(match.getCountA()));
         setScoreB.setText(String.valueOf(match.getCountB()));
-        detailedScoreA.setText(match.getTeamA());
-        detailedScoreB.setText(match.getTeamB());
-        detailedScoreASets.setText(match.getPointsA().toString());
-        detailedScoreBSets.setText(match.getPointsB().toString());
+
+        setA.setText(String.valueOf(match.getScoreA()));
+        setB.setText(String.valueOf(match.getScoreB()));
+
+        int colorWinner =ContextCompat.getColor(this, R.color.colorAccent) ;
+        int colorLooser = ContextCompat.getColor(this, R.color.colorPrimaryDark) ;
+        TableRow llDetailA = (TableRow) findViewById(R.id.llDetailA);
+        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA(), colorWinner , colorLooser);
+
+        TableRow llDetailB = (TableRow) findViewById(R.id.llDetailB);
+        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB(), colorLooser, colorWinner);
+    }
+
+    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team, int colorWinner, int colorLooser) {
+        TextView nameTeam = new TextView(this);
+        nameTeam.setText(team);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x/2;
+        TableRow.LayoutParams ltw = new TableRow.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ltw.setMargins(0,0,20,0);
+
+        nameTeam.setLayoutParams(ltw);
+        nameTeam.setPadding(0,0,10,0);
+        nameTeam.setTextSize(22);
+        nameTeam.setMaxLines(1);
+        linear.addView(nameTeam);
+        for (int item: list) {
+            TextView text = new TextView(this);
+            text.setText(String.valueOf(item));
+            if (String.valueOf(item).equals("25")) {
+                text.setBackgroundColor(colorWinner);
+            }
+            if (!String.valueOf(item).equals("25")){
+                text.setBackgroundColor(colorLooser);
+            }
+
+            text.setPadding(5,0,25,0);
+            text.setTextSize(22);
+            linear.addView(text);
+        }
     }
 }

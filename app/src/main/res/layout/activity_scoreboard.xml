@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginLeft="15sp"
-    android:layout_marginRight="15sp"
+    android:layout_marginLeft="20sp"
+    android:layout_marginRight="20sp"
     tools:context="siliconwally.net.wallyapp.ScoreboardActivity">
 
     <LinearLayout
@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/nameA"
@@ -22,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="40.0"
             android:text="JalaSoft"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            tools:layout_editor_absoluteX="184dp" />
 
         <TextView
             android:id="@+id/nameB"
@@ -34,33 +36,122 @@
             android:textAlignment="textEnd" />
 
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="1sp"
+        android:background="@color/primary_text" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/setScoreA"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40.0"
-            android:text="10"
-            android:textSize="150sp"/>
+            android:layout_height="match_parent"
+            android:layout_weight="35.0">
 
-        <TextView
-            android:id="@+id/setScoreB"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="40.0"
-            android:text="20"
-            android:textSize="150sp"
-            android:textAlignment="textEnd" />
+            <TextView
+                android:id="@+id/setScoreA"
+                android:layout_width="209dp"
+                android:layout_height="193dp"
+                android:layout_marginEnd="7dp"
+                android:layout_weight="35.0"
+                android:text="10"
+                android:textSize="150sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSetA"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewSetA"
+                android:layout_width="59dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:shadowDx="1"
+                android:text="2"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView7"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSetB"
+                app:layout_constraintStart_toEndOf="@+id/setScoreA"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewSetB"
+                android:layout_width="55dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="11dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="40dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="1"
+                android:textSize="25sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView8"
+                app:layout_constraintEnd_toStartOf="@+id/setScoreB"
+                app:layout_constraintStart_toEndOf="@+id/textViewSetA"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="59dp"
+                android:layout_height="73dp"
+                android:layout_marginBottom="29dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/setScoreA"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSetA" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="57dp"
+                android:layout_height="75dp"
+                android:layout_marginBottom="29dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/setScoreB"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSetB" />
+
+            <TextView
+                android:id="@+id/setScoreB"
+                android:layout_width="203dp"
+                android:layout_height="194dp"
+                android:layout_marginStart="7dp"
+                android:layout_weight="35.0"
+                android:text="20"
+                android:textAlignment="textEnd"
+                android:textSize="150sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView8"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="1sp"
+        android:background="@color/primary_text" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,48 +160,56 @@
         android:layout_alignParentRight="true"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <TableRow
+                android:id="@+id/llDetailA"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/detailedScoreA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="30.0"
-                android:text="JalaSoft"
-                android:textSize="20sp"/>
+                <!--<TextView
+                    android:id="@+id/detailedScoreA"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30.0"
+                    android:text="JalaSoft"
+                    android:textSize="20sp"/>-->
 
-            <TextView
-                android:id="@+id/detailedScoreASets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="70.0"
-                android:text="10, 15, 20"
-                android:textSize="20sp"/>
-        </LinearLayout>
+                <!--<TextView
+                    android:id="@+id/detailedScoreASets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70.0"
+                    android:text="10, 15, 20"
+                    android:textSize="20sp"/>-->
+            </TableRow>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <TableRow
+                android:id="@+id/llDetailB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <!--<TextView
+                    android:id="@+id/detailedScoreB"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30.0"
+                    android:text="Truextend"
+                    android:textSize="20sp"/>-->
 
-            <TextView
-                android:id="@+id/detailedScoreB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="30.0"
-                android:text="Truextend"
-                android:textSize="20sp"/>
+                <!--<TextView
+                    android:id="@+id/detailedScoreBSets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70.0"
+                    android:text="10, 15, 20"
+                    android:textSize="20sp"/>-->
+            </TableRow>
 
-            <TextView
-                android:id="@+id/detailedScoreBSets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="70.0"
-                android:text="10, 15, 20"
-                android:textSize="20sp"/>
-        </LinearLayout>
+        </TableLayout>
 
     </LinearLayout>
 
