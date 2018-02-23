@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -31,6 +32,9 @@ public class ScoreboardActivity extends BaseActivity {
     private TextView nameB;
     private TextView setScoreA;
     private TextView setScoreB;
+
+    private TextView setA;
+    private TextView setB;
     private TextView detailedScoreA;
     private TextView detailedScoreB;
     private TextView detailedScoreASets;
@@ -60,6 +64,11 @@ public class ScoreboardActivity extends BaseActivity {
         nameB = findViewById(R.id.nameB);
         setScoreA = findViewById(R.id.setScoreA);
         setScoreB = findViewById(R.id.setScoreB);
+
+        setA = findViewById(R.id.textViewSetA);
+        setB = findViewById(R.id.textViewSetB);
+
+
 
         //detailedScoreA = findViewById(R.id.detailedScoreA);
         //detailedScoreB = findViewById(R.id.detailedScoreB);
@@ -119,20 +128,19 @@ public class ScoreboardActivity extends BaseActivity {
         setScoreA.setText(String.valueOf(match.getCountA()));
         setScoreB.setText(String.valueOf(match.getCountB()));
 
-        //detailedScoreA.setText(match.getTeamA());
-        //detailedScoreB.setText(match.getTeamB());
+        setA.setText(String.valueOf(match.getScoreA()));
+        setB.setText(String.valueOf(match.getScoreB()));
 
-        //detailedScoreASets.setText(match.getPointsA().toString());
-
+        int colorWinner =ContextCompat.getColor(this, R.color.colorAccent) ;
+        int colorLooser = ContextCompat.getColor(this, R.color.colorPrimaryDark) ;
         TableRow llDetailA = (TableRow) findViewById(R.id.llDetailA);
-        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA());
+        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA(), colorWinner , colorLooser);
 
-        //detailedScoreBSets.setText(match.getPointsB().toString());
         TableRow llDetailB = (TableRow) findViewById(R.id.llDetailB);
-        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB());
+        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB(), colorLooser, colorWinner);
     }
 
-    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team) {
+    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team, int colorWinner, int colorLooser) {
         TextView nameTeam = new TextView(this);
         nameTeam.setText(team);
         Display display = getWindowManager().getDefaultDisplay();
@@ -150,7 +158,13 @@ public class ScoreboardActivity extends BaseActivity {
         for (int item: list) {
             TextView text = new TextView(this);
             text.setText(String.valueOf(item));
-            //text.setBackgroundColor(Color.CYAN);
+            if (String.valueOf(item).equals("25")) {
+                text.setBackgroundColor(colorWinner);
+            }
+            if (!String.valueOf(item).equals("25")){
+                text.setBackgroundColor(colorLooser);
+            }
+
             text.setPadding(5,0,25,0);
             text.setTextSize(22);
             linear.addView(text);
