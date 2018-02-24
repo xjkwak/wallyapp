@@ -82,7 +82,7 @@ public class CurrentPlaysFragment extends Fragment {
                 List<Match> matches = response.body();
 
                 System.out.println("Recuperó");
-//                MatchesActivity.this.writeMatches(matches);
+                //CurrentPlaysFragment.this.writeMatches(matches);
                 initSpinnerWeeks(matches);
                 System.out.println(matches.toString());
             }
@@ -93,6 +93,13 @@ public class CurrentPlaysFragment extends Fragment {
             }
         });
     }
+
+    /*private void writeMatches(List<Match> matches) {
+
+        for (Match match: matches) {
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
+    }*/
 
     private void initSpinnerWeeks(List<Match> matches) {
         if (matches.size() == 0) {
