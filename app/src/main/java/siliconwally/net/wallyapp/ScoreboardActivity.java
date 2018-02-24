@@ -35,12 +35,16 @@ public class ScoreboardActivity extends BaseActivity {
 
     private TextView setA;
     private TextView setB;
+    private TextView setColorA;
+    private TextView setColorB;
     private TextView detailedScoreA;
     private TextView detailedScoreB;
     private TextView detailedScoreASets;
     private TextView detailedScoreBSets;
     private Match match;
     private DatabaseReference mDatabase;
+    private static String FIRST_SET_POINT = "25";
+    private static String SECOND_SET_POINT = "15";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class ScoreboardActivity extends BaseActivity {
 
         setA = findViewById(R.id.textViewSetA);
         setB = findViewById(R.id.textViewSetB);
+        setColorA = findViewById(R.id.textViewSetColorA);
+        setColorB = findViewById(R.id.textViewSetColorB);
 
 
 
@@ -123,6 +129,10 @@ public class ScoreboardActivity extends BaseActivity {
     }
 
     private void updateScoreboard() {
+        //Color of sets
+        int colorA = ContextCompat.getColor(this, R.color.colorAccent);
+        int colorB = ContextCompat.getColor(this, R.color.colorPrimaryDark) ;
+
         nameA.setText(match.getTeamA());
         nameB.setText(match.getTeamB());
         setScoreA.setText(String.valueOf(match.getCountA()));
@@ -130,44 +140,56 @@ public class ScoreboardActivity extends BaseActivity {
 
         setA.setText(String.valueOf(match.getScoreA()));
         setB.setText(String.valueOf(match.getScoreB()));
+        setColorA.setBackgroundColor(colorA);
+        setColorB.setBackgroundColor(colorB);
 
-        int colorWinner =ContextCompat.getColor(this, R.color.colorAccent) ;
-        int colorLooser = ContextCompat.getColor(this, R.color.colorPrimaryDark) ;
         TableRow llDetailA = (TableRow) findViewById(R.id.llDetailA);
-        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA(), colorWinner , colorLooser);
+        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA(), colorA , colorB);
 
         TableRow llDetailB = (TableRow) findViewById(R.id.llDetailB);
-        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB(), colorLooser, colorWinner);
+        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB(), colorB, colorA);
     }
 
-    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team, int colorWinner, int colorLooser) {
+    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team, int colorA, int colorB) {
         TextView nameTeam = new TextView(this);
         nameTeam.setText(team);
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x/2;
+        int width = getMiddleScreenWidth();
         TableRow.LayoutParams ltw = new TableRow.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
         ltw.setMargins(0,0,20,0);
 
+        TableRow.LayoutParams ltwSets = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ltwSets.setMargins(5,0,5,0);
+
         nameTeam.setLayoutParams(ltw);
-        nameTeam.setPadding(0,0,10,0);
+        nameTeam.setPadding(0,5,10,0);
         nameTeam.setTextSize(22);
         nameTeam.setMaxLines(1);
+        nameTeam.setTextColor(Color.WHITE);
         linear.addView(nameTeam);
         for (int item: list) {
             TextView text = new TextView(this);
             text.setText(String.valueOf(item));
-            if (String.valueOf(item).equals("25")) {
-                text.setBackgroundColor(colorWinner);
+
+            if (String.valueOf(item).equals(ScoreboardActivity.FIRST_SET_POINT) || String.valueOf(item).equals(ScoreboardActivity.SECOND_SET_POINT)) {
+                text.setBackgroundColor(colorA);
             }
-            if (!String.valueOf(item).equals("25")){
-                text.setBackgroundColor(colorLooser);
+            if (!String.valueOf(item).equals(ScoreboardActivity.FIRST_SET_POINT) && !String.valueOf(item).equals(ScoreboardActivity.SECOND_SET_POINT)){
+                text.setBackgroundColor(colorB);
             }
 
-            text.setPadding(5,0,25,0);
+            text.setPadding(5,5,25,0);
+            text.setTextColor(Color.WHITE);
+            text.setLayoutParams(ltwSets);
             text.setTextSize(22);
             linear.addView(text);
         }
+    }
+
+    private int getMiddleScreenWidth() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x/2;
+        return width;
     }
 }
