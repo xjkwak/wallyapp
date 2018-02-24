@@ -59,6 +59,9 @@ public class MainActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             match = (Match) extras.getSerializable("match");
+            System.out.println("·················································");
+            System.out.println(match);
+            System.out.println("·················································");
         }
         setContentView(R.layout.activity_main);
         scoreTeamA = findViewById(R.id.pointsTeamA);
@@ -162,7 +165,7 @@ public class MainActivity extends BaseActivity {
     private void setSetName() {
         int sets = match.getPointsA().size();
 
-        if (sets >= 0 && sets < Match.MAX_SETS) {
+        if (sets >= 0 && sets < match.getSetsToWin()) {
             Resources res = getResources();
             String setsName[] = res.getStringArray(R.array.sets);
             setName.setText(setsName[sets]);

@@ -19,18 +19,21 @@ public class Match implements Serializable {
     private int scoreB;
     private ArrayList<Integer> pointsA;
     private ArrayList<Integer> pointsB;
-    public static final int MAX_SETS = 5;
     private String uidArbitro;
     private String estado;
     private int nidA;
     private int nidB;
+    private int setsToWin;
+    private int pointsTie;
+    private int pointsSet;
 
     public Match() {
         pointsA = new ArrayList<>();
         pointsB = new ArrayList<>();
     }
 
-    public Match(int nid, String date, String teamA, String teamB, String arena, String uidArbitro, String estado) {
+    public Match(int nid, String date, String teamA, String teamB, String arena,
+                 String uidArbitro, String estado, int setsToWin, int pointsTie, int pointsSet) {
         this();
         this.nid = nid;
         this.date = date;
@@ -41,6 +44,33 @@ public class Match implements Serializable {
         this.countB = 0;
         this.uidArbitro = uidArbitro;
         this.estado = estado;
+        this.setsToWin = setsToWin;
+        this.pointsTie = pointsTie;
+        this.pointsSet = pointsSet;
+    }
+
+    public int getSetsToWin() {
+        return setsToWin;
+    }
+
+    public void setSetsToWin(int setsToWin) {
+        this.setsToWin = setsToWin;
+    }
+
+    public int getPointsTie() {
+        return pointsTie;
+    }
+
+    public void setPointsTie(int pointsTie) {
+        this.pointsTie = pointsTie;
+    }
+
+    public int getPointsSet() {
+        return pointsSet;
+    }
+
+    public void setPointsSet(int pointsSet) {
+        this.pointsSet = pointsSet;
     }
 
     public int getNidA() {
@@ -168,7 +198,9 @@ public class Match implements Serializable {
     }
 
     public String toString() {
-        return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")], arbitro=" + this.uidArbitro;
+        return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")], arbitro="
+                + this.uidArbitro + " Points set = " + this.pointsSet + ", Points tie = " + this.pointsTie
+                + ", Points to win = " + this.setsToWin;
     }
 
     public void updateScore() {
@@ -187,8 +219,9 @@ public class Match implements Serializable {
     }
 
     public boolean hasEndSet() {
-        if (scoreA == 2 && scoreB == 2) return endSet(15);
-        return endSet(25);
+        int setTie = this.getSetsToWin() - 1;
+        if (scoreA == setTie  && scoreB == setTie) return endSet(this.getPointsTie());
+        return endSet(this.getPointsSet());
     }
 
     private boolean endSet(int limit) {
@@ -198,7 +231,7 @@ public class Match implements Serializable {
     }
 
     public boolean hasFinished() {
-        return scoreA >= 3 || scoreB >= 3;
+        return scoreA >= this.getSetsToWin() || scoreB >= this.getSetsToWin();
     }
 
     public String getUidArbitro() {
