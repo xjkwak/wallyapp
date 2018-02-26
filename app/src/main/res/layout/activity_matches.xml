@@ -24,7 +24,10 @@
         android:id="@+id/viewPagerMatch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbarLayout" />
+        android:layout_below="@id/appbarLayout"
+        android:paddingLeft="@dimen/activity_size_padding"
+        android:paddingRight="@dimen/activity_size_padding"
+        android:background="@android:color/white"/>
     <!--<Spinner
         android:id="@+id/wally_weeks"
         android:layout_width="match_parent"
