@@ -10,6 +10,8 @@ tools:context="siliconwally.net.wallyapp.TeamsActivity">
 <android.support.v7.widget.RecyclerView
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_size_padding"
+    android:paddingRight="@dimen/activity_size_padding"/>
 
 </LinearLayout>

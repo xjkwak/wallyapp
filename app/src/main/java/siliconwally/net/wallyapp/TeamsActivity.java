@@ -17,6 +17,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import siliconwally.net.wallyapp.service.ConstantsRestApi;
+import siliconwally.net.wallyapp.service.EndPointApi;
+import siliconwally.net.wallyapp.service.RestApiAdapter;
 
 public class TeamsActivity extends BaseActivity {
 
@@ -31,14 +34,10 @@ public class TeamsActivity extends BaseActivity {
 
         setContentView(R.layout.activity_teams);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://siliconwally.net")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
 
-        SiliconWally siliconWally = retrofit.create(SiliconWally.class);
-
-        Call<List<Team>> teams = siliconWally.teams();
+        Call<List<Team>> teams = service.teams();
         final List<Team> list = new ArrayList<>();
 
         teams.enqueue(new Callback<List<Team>>() {

@@ -121,16 +121,11 @@ public class MainActivity extends BaseActivity {
         imageViewB[3] = findViewById(R.id.image8);
 
 
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
 
-        final String baseUrl = "https://siliconwally.net";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        SiliconWally siliconWally = retrofit.create(SiliconWally.class);
-
-        Call<ArrayList<Player>> players = siliconWally.players(match.getNidA());
+        Call<ArrayList<Player>> players = service.players(match.getNidA());
 
         players.enqueue(new Callback<ArrayList<Player>>() {
             @Override
@@ -144,7 +139,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        players = siliconWally.players(match.getNidB());
+        players = service.players(match.getNidB());
 
         players.enqueue(new Callback<ArrayList<Player>>() {
             @Override

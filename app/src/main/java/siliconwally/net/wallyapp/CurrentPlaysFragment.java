@@ -25,8 +25,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-
+import siliconwally.net.wallyapp.service.ConstantsRestApi;
+import siliconwally.net.wallyapp.service.EndPointApi;
+import siliconwally.net.wallyapp.service.RestApiAdapter;
 
 
 public class CurrentPlaysFragment extends Fragment {
@@ -67,14 +68,10 @@ public class CurrentPlaysFragment extends Fragment {
     private void loadData(View view) {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://siliconwally.net")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(getContext());
 
-        SiliconWally siliconWally = retrofit.create(SiliconWally.class);
-
-        Call<List<Match>> matches = siliconWally.matches();
+        Call<List<Match>> matches = service.matches();
 
         matches.enqueue(new Callback<List<Match>>() {
             @Override
@@ -143,3 +140,4 @@ public class CurrentPlaysFragment extends Fragment {
     }
 
 }
+
