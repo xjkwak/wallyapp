@@ -67,7 +67,7 @@ public class DetailTeamActivity extends AppCompatActivity {
         }
 
         if (!match.getUidArbitro().equals("1")) {
-            btnArbitrar.setVisibility(View.INVISIBLE);
+            btnReset.setVisibility(View.INVISIBLE);
         }
 
 
