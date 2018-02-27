@@ -2,6 +2,7 @@ package siliconwally.net.wallyapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import siliconwally.net.wallyapp.service.ConstantsRestApi;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerListViewHolder> {
 
@@ -40,10 +43,12 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         final Player player = list.get(position);
         holder.name.setText(player.getName());
         holder.number.setText(player.getNumber());
-        Picasso.with(context).load("https://siliconwally.net/"+player.getPhoto()).into(holder.photo);
+        Picasso.with(context).load(ConstantsRestApi.BASE_URL + "/" + player.getPhoto()).into(holder.photo);
         holder.enable.setChecked(player.isEnabled());
 
-        holder.number.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
+        holder.number.setBackgroundColor(selectedPosition == position
+                ? ContextCompat.getColor(context, R.color.colorAccent)
+                : Color.TRANSPARENT);
     }
 
     @Override

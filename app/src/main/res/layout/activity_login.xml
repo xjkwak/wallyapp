@@ -47,8 +47,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:background="@drawable/com_facebook_button_background"
         android:onClick="enter"
-        android:text="@string/login_enter" />
+        android:text="@string/login_enter"
+        android:textColor="@android:color/white" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"

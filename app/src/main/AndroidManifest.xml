@@ -76,13 +76,20 @@
         <activity android:name=".TeamsActivity" />
         <activity
             android:name=".ScoreboardActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity
-            android:name=".SplashActivity">
+            android:screenOrientation="landscape" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".DetailTeamActivity"
+            android:label="@string/title_activity_detail_team">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MatchesActivity" />
         </activity>
     </application>
 

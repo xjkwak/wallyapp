@@ -25,4 +25,5 @@
         <item>Fourth Set</item>
         <item>Fifth Set</item>
     </string-array>
+    <string name="title_activity_detail_team">Detail</string>
 </resources>
