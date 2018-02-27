@@ -63,4 +63,15 @@
         android:padding="2dp"
         android:text="Arbitrar"
         android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:background="@drawable/com_facebook_button_background"
+        android:onClick="resetMatch"
+        android:padding="2dp"
+        android:text="Reset"
+        android:textColor="@android:color/white" />
 </LinearLayout>

@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 public class DetailTeamActivity extends AppCompatActivity {
@@ -20,14 +23,14 @@ public class DetailTeamActivity extends AppCompatActivity {
     private TextView date;
     private Button btnArbitrar;
     private String userId;
-    public DetailTeamActivity() {
+    private DatabaseReference mDatabase;
 
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_team);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         titleMatch = findViewById(R.id.textViewTitle);
         time = findViewById(R.id.txtViewTime);
         date = findViewById(R.id.textViewDate);
@@ -72,5 +75,10 @@ public class DetailTeamActivity extends AppCompatActivity {
         intent.putExtra("match", match);
         this.startActivity(intent);
 
+    }
+
+    public void resetMatch(View view) {
+        this.match.reset();
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
     }
 }

@@ -249,4 +249,14 @@ public class Match implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public void reset() {
+        this.countB = 0;
+        this.countA = 0;
+        this.estado = "No iniciado";
+        this.scoreA = 0;
+        this.scoreB = 0;
+        this.pointsA = new ArrayList<>();
+        this.pointsB = new ArrayList<>();
+    }
 }
