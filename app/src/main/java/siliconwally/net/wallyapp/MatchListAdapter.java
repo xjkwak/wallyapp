@@ -74,7 +74,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
             txtTime = (TextView) itemView.findViewById(R.id.match_time);
             txtTeams =( TextView) itemView.findViewById(R.id.match_teams);
             arbitrar = (ImageView) itemView.findViewById(R.id.arbitrar);
-            //ver = itemView.findViewById(R.id.ver);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -83,38 +82,7 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
                     MatchListAdapter.this.showScoreboardViewer(match);
                 }
             });
-            /*arbitrar.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    selectedPosition = getAdapterPosition();
-                    Match match = list.get(selectedPosition);
-                    MatchListAdapter.this.showScoreboard(match);
-                }
-            });*/
-
-            /*ver.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    selectedPosition = getAdapterPosition();
-                    Match match = list.get(selectedPosition);
-                    MatchListAdapter.this.showScoreboardViewer(match);
-                }
-            });*/
         }
-
-     /*        @Override
-        public void onClick(View view) {
-
-            Toast.makeText(view.getContext(), "position = "+selectedPosition, Toast.LENGTH_SHORT).show();
-        }*/
-    }
-
-    private void showScoreboard(Match match) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("match", match);
-        context.startActivity(intent);
     }
 
     private void showScoreboardViewer(Match match) {

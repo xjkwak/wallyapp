@@ -48,6 +48,8 @@ public class MainActivity extends BaseActivity {
     private DatabaseReference mDatabase;
     private ImageView imageViewA[];
     private ImageView imageViewB[];
+    private static final String NOT_INITIALIZE  = "41";
+    private static final String INPROGRESS = "42";
     private static final String FINALIZED  = "43";
     private ArrayList<Player> playersA;
     private ArrayList<Player> playersB;
@@ -205,49 +207,8 @@ public class MainActivity extends BaseActivity {
             if (match.hasFinished()) {
                 scoreTeamA.setClickable(false);
                 scoreTeamB.setClickable(false);
-                // Call to service
-                RestApiAdapter restApiAdapter = new RestApiAdapter();
-                EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
-                JsonObject data = new JsonObject();
-                int nid = match.getNid();
-                String nodeId = String.valueOf(nid);
 
-                //Create Json Payload
-                JsonObject nidObject = new JsonObject();
-                nidObject.addProperty("value", nodeId);
-                JsonArray arrayNid = new JsonArray();
-                arrayNid.add(nidObject);
-
-                JsonObject type = new JsonObject();
-                type.addProperty("target_id", "partido");
-                JsonArray arrayType = new JsonArray();
-                arrayType.add(type);
-
-
-                JsonObject state = new JsonObject();
-                state.addProperty("target_id", FINALIZED);
-                JsonArray arrayState = new JsonArray();
-                arrayState.add(state);
-
-                data.add("nid", arrayNid);
-                data.add("type", arrayType);
-                data.add("field_partido_estado", arrayState);
-
-                service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
-
-                    @Override
-                    public void onResponse(@NonNull Call<MatchNode> call, @NonNull Response<MatchNode> response) {
-                        if (response.isSuccessful()) {
-                            MatchNode node = response.body();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MatchNode> call, @NonNull Throwable t) {
-                        System.out.println("Error update node!!!!!!");
-                    }
-                });
-
+                updateNodeTeamStatus(match, FINALIZED);
             }
         }
 
@@ -308,5 +269,50 @@ public class MainActivity extends BaseActivity {
         Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
         i.putExtra("players", this.playersB);
         startActivityForResult(i, 2);
+    }
+
+    public void updateNodeTeamStatus(Match match, String status) {
+        // Call to service
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
+        JsonObject data = new JsonObject();
+        int nid = match.getNid();
+        String nodeId = String.valueOf(nid);
+
+        //Create Json Payload
+        JsonObject nidObject = new JsonObject();
+        nidObject.addProperty("value", nodeId);
+        JsonArray arrayNid = new JsonArray();
+        arrayNid.add(nidObject);
+
+        JsonObject type = new JsonObject();
+        type.addProperty("target_id", "partido");
+        JsonArray arrayType = new JsonArray();
+        arrayType.add(type);
+
+
+        JsonObject state = new JsonObject();
+        state.addProperty("target_id", status);
+        JsonArray arrayState = new JsonArray();
+        arrayState.add(state);
+
+        data.add("nid", arrayNid);
+        data.add("type", arrayType);
+        data.add("field_partido_estado", arrayState);
+
+        service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
+
+            @Override
+            public void onResponse(@NonNull Call<MatchNode> call, @NonNull Response<MatchNode> response) {
+                if (response.isSuccessful()) {
+                    MatchNode node = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MatchNode> call, @NonNull Throwable t) {
+                System.out.println("Error update node!!!!!!");
+            }
+        });
     }
 }
