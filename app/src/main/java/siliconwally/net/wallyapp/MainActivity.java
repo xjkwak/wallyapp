@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity {
 
         int index = 0;
 
-        final String baseUrl = "https://siliconwally.net";
+        final String baseUrl = "http://dev.siliconwally.net";
 
         for(Player player: players) {
             if (player.isEnabled() && index < imageView.length) {
