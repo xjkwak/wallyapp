@@ -66,7 +66,13 @@ public class DetailTeamActivity extends AppCompatActivity {
             btnArbitrar.setVisibility(View.VISIBLE);
         }
 
-        if (!match.getUidArbitro().equals("1")) {
+        SessionManager session = new SessionManager(getApplicationContext());
+        String userUid = session.getUserId();
+
+        if (userUid.equals("1")) {
+            btnReset.setVisibility(View.VISIBLE);
+        }
+        else {
             btnReset.setVisibility(View.INVISIBLE);
         }
 
