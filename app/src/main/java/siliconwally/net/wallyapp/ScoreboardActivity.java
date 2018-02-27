@@ -1,20 +1,15 @@
 package siliconwally.net.wallyapp;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -37,14 +32,12 @@ public class ScoreboardActivity extends BaseActivity {
     private TextView setB;
     private TextView setColorA;
     private TextView setColorB;
-    private TextView detailedScoreA;
-    private TextView detailedScoreB;
-    private TextView detailedScoreASets;
-    private TextView detailedScoreBSets;
     private Match match;
     private DatabaseReference mDatabase;
-    private static String FIRST_SET_POINT = "25";
-    private static String SECOND_SET_POINT = "15";
+    private int fistSetPoint;
+    private int secondSetPoint;
+    private TableRow llDetailA;
+    private TableRow llDetailB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +47,8 @@ public class ScoreboardActivity extends BaseActivity {
 
         if (extras != null) {
             match = (Match) extras.getSerializable("match");
+            fistSetPoint = match.getPointsSet();
+            secondSetPoint = match.getPointsTie();
         }
 
         //Remove title bar
@@ -63,6 +58,8 @@ public class ScoreboardActivity extends BaseActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_scoreboard);
+
+
 
         nameA = findViewById(R.id.nameA);
         nameB = findViewById(R.id.nameB);
@@ -74,18 +71,14 @@ public class ScoreboardActivity extends BaseActivity {
         setColorA = findViewById(R.id.textViewSetColorA);
         setColorB = findViewById(R.id.textViewSetColorB);
 
-
-
-        //detailedScoreA = findViewById(R.id.detailedScoreA);
-        //detailedScoreB = findViewById(R.id.detailedScoreB);
-
-        //detailedScoreASets = findViewById(R.id.detailedScoreASets);
-        //detailedScoreBSets = findViewById(R.id.detailedScoreBSets);
-
-//        updateScoreboard();
+        llDetailA = (TableRow) findViewById(R.id.llDetailA);
+        llDetailB = (TableRow) findViewById(R.id.llDetailB);
 
         final MediaPlayer pointsAsound = MediaPlayer.create(this, R.raw.pointsa);
         final MediaPlayer pointsBsound = MediaPlayer.create(this, R.raw.pointsb);
+
+
+        addSetTeam(match, llDetailA, llDetailB);
 
         mDatabase.child("matches").child(String.valueOf(match.getNid())).child("countA").addValueEventListener(new ValueEventListener() {
 
@@ -143,37 +136,28 @@ public class ScoreboardActivity extends BaseActivity {
         setColorA.setBackgroundColor(colorA);
         setColorB.setBackgroundColor(colorB);
 
-        TableRow llDetailA = (TableRow) findViewById(R.id.llDetailA);
-        fillDetailScore(llDetailA, match.getPointsA(), match.getTeamA(), colorA , colorB);
 
-        TableRow llDetailB = (TableRow) findViewById(R.id.llDetailB);
-        fillDetailScore(llDetailB, match.getPointsB(), match.getTeamB(), colorB, colorA);
+        fillDetailScore(llDetailA, match.getPointsA(), colorA , colorB);
+        fillDetailScore(llDetailB, match.getPointsB(), colorB, colorA);
     }
 
-    private void fillDetailScore(TableRow linear, ArrayList<Integer> list, String team, int colorA, int colorB) {
-        TextView nameTeam = new TextView(this);
-        nameTeam.setText(team);
-        int width = getMiddleScreenWidth();
-        TableRow.LayoutParams ltw = new TableRow.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ltw.setMargins(0,0,20,0);
+    private void fillDetailScore(TableRow linear, ArrayList<Integer> list,  int colorA, int colorB) {
+        int count = linear.getChildCount(); // TableRow already contain TexView of the team name
+        if (alreadyRenderPoint(count, list.size())) {
+            return;
+        }
 
         TableRow.LayoutParams ltwSets = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ltwSets.setMargins(5,0,5,0);
-
-        nameTeam.setLayoutParams(ltw);
-        nameTeam.setPadding(0,5,10,0);
-        nameTeam.setTextSize(22);
-        nameTeam.setMaxLines(1);
-        nameTeam.setTextColor(Color.WHITE);
-        linear.addView(nameTeam);
-        for (int item: list) {
+        for (int i = count-1; i<list.size(); i++) {
+            Integer item = list.get(i);
             TextView text = new TextView(this);
             text.setText(String.valueOf(item));
 
-            if (String.valueOf(item).equals(ScoreboardActivity.FIRST_SET_POINT) || String.valueOf(item).equals(ScoreboardActivity.SECOND_SET_POINT)) {
+            if (item == fistSetPoint || item == secondSetPoint) {
                 text.setBackgroundColor(colorA);
             }
-            if (!String.valueOf(item).equals(ScoreboardActivity.FIRST_SET_POINT) && !String.valueOf(item).equals(ScoreboardActivity.SECOND_SET_POINT)){
+            if (item != fistSetPoint && item != secondSetPoint){
                 text.setBackgroundColor(colorB);
             }
 
@@ -185,11 +169,37 @@ public class ScoreboardActivity extends BaseActivity {
         }
     }
 
+    private boolean alreadyRenderPoint(int count, int size) {
+        if (count != 1 && count - 1 == size) {
+            return true;
+        }
+        return false;
+    }
+
     private int getMiddleScreenWidth() {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x/2;
         return width;
+    }
+
+    private void addSetTeam(Match match, TableRow llDetailA, TableRow llDetailB) {
+        int width = getMiddleScreenWidth();
+        TableRow.LayoutParams ltw = new TableRow.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ltw.setMargins(0,0,20,0);
+        setTextName(this, match.getTeamA(), llDetailA, ltw);
+        setTextName(this, match.getTeamB(), llDetailB, ltw);
+    }
+
+    private void setTextName(Context context , String team, TableRow linear, TableRow.LayoutParams ltw) {
+        TextView nameTeam = new TextView(context);
+        nameTeam.setText(team);
+        nameTeam.setLayoutParams(ltw);
+        nameTeam.setPadding(0,5,10,0);
+        nameTeam.setTextSize(22);
+        nameTeam.setMaxLines(1);
+        nameTeam.setTextColor(Color.WHITE);
+        linear.addView(nameTeam);
     }
 }
