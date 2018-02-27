@@ -2,12 +2,15 @@ package siliconwally.net.wallyapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,7 +41,6 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     public MatchListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.match_row, parent, false);
-
         return new MatchListViewHolder(v);
     }
 
@@ -61,31 +63,19 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
       return this.list.size();
     }
 
-    public class MatchListViewHolder extends RecyclerView.ViewHolder{
+    public class MatchListViewHolder extends RecyclerView.ViewHolder {
         private TextView txtTime;
         private TextView txtTeams;
-        private Button arbitrar;
-        private Button ver;
+        private ImageView arbitrar;
+        //private Button ver;
 
         public MatchListViewHolder(View itemView) {
             super(itemView);
             txtTime = (TextView) itemView.findViewById(R.id.match_time);
             txtTeams =( TextView) itemView.findViewById(R.id.match_teams);
-            arbitrar = itemView.findViewById(R.id.arbitrar);
-            ver = itemView.findViewById(R.id.ver);
-
-            arbitrar.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    selectedPosition = getAdapterPosition();
-                    Match match = list.get(selectedPosition);
-                    MatchListAdapter.this.showScoreboard(match);
-                }
-            });
-
-            ver.setOnClickListener(new View.OnClickListener(){
-
+            arbitrar = (ImageView) itemView.findViewById(R.id.arbitrar);
+            //ver = itemView.findViewById(R.id.ver);
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     selectedPosition = getAdapterPosition();
@@ -93,7 +83,32 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
                     MatchListAdapter.this.showScoreboardViewer(match);
                 }
             });
+            /*arbitrar.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    selectedPosition = getAdapterPosition();
+                    Match match = list.get(selectedPosition);
+                    MatchListAdapter.this.showScoreboard(match);
+                }
+            });*/
+
+            /*ver.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    selectedPosition = getAdapterPosition();
+                    Match match = list.get(selectedPosition);
+                    MatchListAdapter.this.showScoreboardViewer(match);
+                }
+            });*/
         }
+
+     /*        @Override
+        public void onClick(View view) {
+
+            Toast.makeText(view.getContext(), "position = "+selectedPosition, Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     private void showScoreboard(Match match) {
@@ -103,8 +118,9 @@ public class MatchListAdapter extends RecyclerView.Adapter<MatchListAdapter.Matc
     }
 
     private void showScoreboardViewer(Match match) {
-        Intent intent = new Intent(context, ScoreboardActivity.class);
+        Intent intent = new Intent(context, DetailTeamActivity.class);
         intent.putExtra("match", match);
+        intent.putExtra("userId", this.userUid);
         context.startActivity(intent);
     }
 }
