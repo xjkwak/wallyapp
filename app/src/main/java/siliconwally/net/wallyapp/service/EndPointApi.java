@@ -39,7 +39,7 @@ public interface EndPointApi {
     Call<List<Match>> matches();
 
     @GET("/api/v1/matches/{nid}")
-    Call<Match> matches(@Path("nid") int id);
+    Call<List<Match>> matches(@Path("nid") int id);
 
     @GET("/api/v1/teams/{nid}/players")
     Call<ArrayList<Player>> players(@Path("nid") int nid);

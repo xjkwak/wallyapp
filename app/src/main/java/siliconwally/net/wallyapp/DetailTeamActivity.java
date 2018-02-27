@@ -14,6 +14,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import siliconwally.net.wallyapp.service.EndPointApi;
+import siliconwally.net.wallyapp.service.RestApiAdapter;
+
 public class DetailTeamActivity extends AppCompatActivity {
 
     private Match match;
@@ -22,6 +30,7 @@ public class DetailTeamActivity extends AppCompatActivity {
     private TextView time;
     private TextView date;
     private Button btnArbitrar;
+    private Button btnReset;
     private String userId;
     private DatabaseReference mDatabase;
 
@@ -35,6 +44,7 @@ public class DetailTeamActivity extends AppCompatActivity {
         time = findViewById(R.id.txtViewTime);
         date = findViewById(R.id.textViewDate);
         btnArbitrar = findViewById(R.id.btnArbitrar);
+        btnReset = findViewById(R.id.btnReset);
 
         Bundle extras = getIntent().getExtras();
 
@@ -56,6 +66,9 @@ public class DetailTeamActivity extends AppCompatActivity {
             btnArbitrar.setVisibility(View.VISIBLE);
         }
 
+        if (!match.getUidArbitro().equals("1")) {
+            btnArbitrar.setVisibility(View.INVISIBLE);
+        }
 
 
         final ActionBar actionBar = getSupportActionBar();
@@ -78,7 +91,27 @@ public class DetailTeamActivity extends AppCompatActivity {
     }
 
     public void resetMatch(View view) {
-        this.match.reset();
-        mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(getApplicationContext());
+
+        Call<List<Match>> matches = service.matches(this.match.getNid());
+
+        matches.enqueue(new Callback<List<Match>>() {
+            @Override
+            public void onResponse(Call<List<Match>> call, Response<List<Match>> response) {
+                List<Match> matches = response.body();
+
+                if (matches != null && !matches.isEmpty()) {
+                    DetailTeamActivity.this.match = matches.get(0);
+                    mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Match>> call, Throwable t) {
+                System.out.println("Falló");
+            }
+        });
     }
 }
