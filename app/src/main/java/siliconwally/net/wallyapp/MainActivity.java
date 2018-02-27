@@ -31,6 +31,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import siliconwally.net.wallyapp.model.MatchNode;
+import siliconwally.net.wallyapp.service.ConstantsRestApi;
 import siliconwally.net.wallyapp.service.EndPointApi;
 import siliconwally.net.wallyapp.service.RestApiAdapter;
 
@@ -48,9 +49,9 @@ public class MainActivity extends BaseActivity {
     private DatabaseReference mDatabase;
     private ImageView imageViewA[];
     private ImageView imageViewB[];
-    private static final String FINALIZED  = "43";
     private ArrayList<Player> playersA;
     private ArrayList<Player> playersB;
+    private MatchUtil matchUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,49 +206,8 @@ public class MainActivity extends BaseActivity {
             if (match.hasFinished()) {
                 scoreTeamA.setClickable(false);
                 scoreTeamB.setClickable(false);
-                // Call to service
-                RestApiAdapter restApiAdapter = new RestApiAdapter();
-                EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
-                JsonObject data = new JsonObject();
-                int nid = match.getNid();
-                String nodeId = String.valueOf(nid);
-
-                //Create Json Payload
-                JsonObject nidObject = new JsonObject();
-                nidObject.addProperty("value", nodeId);
-                JsonArray arrayNid = new JsonArray();
-                arrayNid.add(nidObject);
-
-                JsonObject type = new JsonObject();
-                type.addProperty("target_id", "partido");
-                JsonArray arrayType = new JsonArray();
-                arrayType.add(type);
-
-
-                JsonObject state = new JsonObject();
-                state.addProperty("target_id", FINALIZED);
-                JsonArray arrayState = new JsonArray();
-                arrayState.add(state);
-
-                data.add("nid", arrayNid);
-                data.add("type", arrayType);
-                data.add("field_partido_estado", arrayState);
-
-                service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
-
-                    @Override
-                    public void onResponse(@NonNull Call<MatchNode> call, @NonNull Response<MatchNode> response) {
-                        if (response.isSuccessful()) {
-                            MatchNode node = response.body();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<MatchNode> call, @NonNull Throwable t) {
-                        System.out.println("Error update node!!!!!!");
-                    }
-                });
-
+                matchUtil  = new MatchUtil();
+                matchUtil.updateNodeTeamStatus(match, MatchUtil.FINALIZED, this.getApplicationContext());
             }
         }
 
@@ -284,7 +244,7 @@ public class MainActivity extends BaseActivity {
 
         int index = 0;
 
-        final String baseUrl = "http://dev.siliconwally.net";
+        final String baseUrl = ConstantsRestApi.BASE_URL;
 
         for(Player player: players) {
             if (player.isEnabled() && index < imageView.length) {
@@ -309,4 +269,5 @@ public class MainActivity extends BaseActivity {
         i.putExtra("players", this.playersB);
         startActivityForResult(i, 2);
     }
+
 }
