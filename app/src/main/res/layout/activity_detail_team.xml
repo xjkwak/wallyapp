@@ -1,77 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/activity_size_padding"
-    android:paddingRight="@dimen/activity_size_padding"
-    tools:context="siliconwally.net.wallyapp.DetailTeamActivity">
+    android:layout_height="match_parent">
 
-
-    <TextView
-        android:id="@+id/textViewTitle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:gravity="center_vertical|center"
-        android:padding="10dp"
-        android:text="TextView"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_size_padding"
+        android:paddingRight="@dimen/activity_size_padding"
+        tools:context="siliconwally.net.wallyapp.DetailTeamActivity">
 
-    <TextView
-        android:id="@+id/textViewDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="TextView"
-        android:textSize="24sp" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center_vertical|center"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/txtViewTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="TextView"
-        android:textSize="24sp" />
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btnVer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:background="@drawable/com_facebook_button_background"
-        android:onClick="seeMatch"
-        android:text="Ver"
-        android:textColor="@android:color/white" />
+        <TextView
+            android:id="@+id/txtViewTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="TextView"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btnArbitrar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:background="@drawable/com_facebook_button_background"
-        android:onClick="runMatch"
-        android:padding="2dp"
-        android:text="Arbitrar"
-        android:textColor="@android:color/white" />
+        <Button
+            android:id="@+id/btnVer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/com_facebook_button_background"
+            android:onClick="seeMatch"
+            android:text="Ver"
+            android:textColor="@android:color/white" />
 
-    <Button
-        android:id="@+id/btnReset"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp"
-        android:background="@drawable/com_facebook_button_background"
-        android:onClick="resetMatch"
-        android:padding="2dp"
-        android:text="Reset"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+        <Button
+            android:id="@+id/btnArbitrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/com_facebook_button_background"
+            android:onClick="runMatch"
+            android:padding="2dp"
+            android:text="Arbitrar"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/com_facebook_button_background"
+            android:onClick="resetMatch"
+            android:padding="2dp"
+            android:text="Reset"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</ScrollView>
+
