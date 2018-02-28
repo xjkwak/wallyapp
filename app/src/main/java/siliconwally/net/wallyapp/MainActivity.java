@@ -1,19 +1,186 @@
 package siliconwally.net.wallyapp;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import siliconwally.net.wallyapp.model.MatchNode;
+import siliconwally.net.wallyapp.service.ConstantsRestApi;
+import siliconwally.net.wallyapp.service.EndPointApi;
+import siliconwally.net.wallyapp.service.RestApiAdapter;
+
+
+public class MainActivity extends BaseActivity {
+
+    private TextView setName;
+    private TextView scoreA;
+    private TextView scoreB;
+    private EditText teamNameA;
+    private EditText teamNameB;
+    private Button scoreTeamA;
+    private Button scoreTeamB;
+    private Match match;
+    private DatabaseReference mDatabase;
+    private ImageView imageViewA[];
+    private ImageView imageViewB[];
+    private ArrayList<Player> playersA;
+    private ArrayList<Player> playersB;
+    private MatchUtil matchUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            match = (Match) extras.getSerializable("match");
+        }
         setContentView(R.layout.activity_main);
-        Chronometer chronometer = (Chronometer)findViewById(R.id.chronometer);
+        scoreTeamA = findViewById(R.id.pointsTeamA);
+        scoreTeamB = findViewById(R.id.pointsTeamB);
+        scoreA = findViewById(R.id.setScoreA);
+        scoreB = findViewById(R.id.setScoreB);
+        setName = findViewById(R.id.setName);
+
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                match = dataSnapshot.getValue(Match.class);
+                if (match != null ) {
+                    scoreTeamA.setText(String.valueOf(match.getCountA()));
+                    scoreTeamB.setText(String.valueOf(match.getCountB()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        Chronometer chronometer = findViewById(R.id.chronometer);
         chronometer.start();
+        SessionManager session = new SessionManager(getApplicationContext());
+        String username = session.getUserName();
+        setTitle("WallyApp - Usuario: " + username);
+
+        teamNameA = findViewById(R.id.teamNameA);
+        teamNameB = findViewById(R.id.teamNameB);
+        teamNameA.setKeyListener(null);
+        teamNameB.setKeyListener(null);
+
+        if (match != null) {
+            teamNameA.setText(match.getTeamA());
+            teamNameB.setText(match.getTeamB());
+        }
+
+        setSetName();
+
+        createPlayersAvatars();
+    }
+
+    private void createPlayersAvatars() {
+
+        imageViewA = new ImageView[4];
+        imageViewB = new ImageView[4];
+
+        imageViewA[0] = findViewById(R.id.image1);
+        imageViewA[1] = findViewById(R.id.image2);
+        imageViewA[2] = findViewById(R.id.image3);
+        imageViewA[3] = findViewById(R.id.image4);
+
+        imageViewB[0] = findViewById(R.id.image5);
+        imageViewB[1] = findViewById(R.id.image6);
+        imageViewB[2] = findViewById(R.id.image7);
+        imageViewB[3] = findViewById(R.id.image8);
+
+
+        RestApiAdapter restApiAdapter = new RestApiAdapter();
+        EndPointApi service = restApiAdapter.connexionToApi(this.getApplicationContext());
+
+
+        Call<ArrayList<Player>> players = service.players(match.getNidA());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersA = response.body();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
+                System.out.println("Falló");
+            }
+        });
+
+        players = service.players(match.getNidB());
+
+        players.enqueue(new Callback<ArrayList<Player>>() {
+            @Override
+            public void onResponse(@NonNull Call<ArrayList<Player>> call, @NonNull Response<ArrayList<Player>> response) {
+                MainActivity.this.playersB = response.body();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<ArrayList<Player>> call, @NonNull Throwable t) {
+                System.out.println("Falló");
+            }
+        });
+    }
+
+    private void setSetName() {
+        int sets = match.getPointsA().size();
+
+        if (sets >= 0 && sets < match.getSetsToWin()) {
+            Resources res = getResources();
+            String setsName[] = res.getStringArray(R.array.sets);
+            setName.setText(setsName[sets]);
+        }
+    }
+
+    public void reducePointsA(View view) {
+        int teamA = Integer.parseInt(scoreTeamA.getText().toString());
+        if (teamA >= 1) {
+            teamA--;
+            match.setCountA(teamA);
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
+    }
+
+    public void reducePointsB(View view) {
+        int teamB = Integer.parseInt(scoreTeamB.getText().toString());
+        if (teamB >= 1) {
+            teamB--;
+            match.setCountB(teamB);
+            mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+        }
     }
 
     public void addPoints(View view) {
@@ -22,8 +189,85 @@ public class MainActivity extends AppCompatActivity {
         int intValue = Integer.parseInt(value);
         intValue++;
         button.setText(String.valueOf(intValue));
-        System.out.println("Valor:  " + value);
+
+        int teamA = Integer.parseInt(scoreTeamA.getText().toString());
+        int teamB = Integer.parseInt(scoreTeamB.getText().toString());
+
+        match.setCountA(teamA);
+        match.setCountB(teamB);
+
+        if (match.hasEndSet()) {
+            match.updateScore();
+            match.resetCounter();
+            setSetName();
+            scoreA.setText(String.valueOf(match.getScoreA()));
+            scoreB.setText(String.valueOf(match.getScoreB()));
+
+            if (match.hasFinished()) {
+                scoreTeamA.setClickable(false);
+                scoreTeamB.setClickable(false);
+                matchUtil  = new MatchUtil();
+                matchUtil.updateNodeTeamStatus(match, MatchUtil.FINALIZED, this.getApplicationContext());
+            }
+        }
 
 
+        mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
     }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.main_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                this.playersA = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersA, imageViewA);
+            }
+        }
+        else if (requestCode == 2) {
+            if(resultCode == Activity.RESULT_OK){
+                this.playersB = (ArrayList<Player>)data.getSerializableExtra("players");
+                updatePlayerPictures(this.playersB, imageViewB);
+            }
+        }
+    }//onActivityResult
+
+    private void updatePlayerPictures(ArrayList<Player> players, ImageView imageView[]) {
+
+        int index = 0;
+
+        final String baseUrl = ConstantsRestApi.BASE_URL;
+
+        for(Player player: players) {
+            if (player.isEnabled() && index < imageView.length) {
+                Picasso.with(getApplicationContext()).load(baseUrl+player.getPhoto()).into(imageView[index]);
+                index++;
+            }
+        }
+
+        for (int i = index; i < imageView.length; i++) {
+            imageView[i].setImageDrawable(getResources().getDrawable(R.drawable.default_player));
+        }
+    }
+
+    public void selectPlayersTeamA(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersA);
+        startActivityForResult(i, 1);
+    }
+
+    public void selectPlayersTeamB(View view) {
+        Intent i = new Intent(MainActivity.this, PlayerPickerActivity.class);
+        i.putExtra("players", this.playersB);
+        startActivityForResult(i, 2);
+    }
+
 }

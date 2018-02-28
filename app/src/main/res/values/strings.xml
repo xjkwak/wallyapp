@@ -1,3 +1,29 @@
 <resources>
+    <string name="facebook_app_id">169813940424493</string>
+    <string name="fb_login_protocol_scheme">fb169813940424493</string>
     <string name="app_name">WallyApp</string>
+    <string name="defaultNameTeamA">Team A</string>
+    <string name="defaultNameTeamB">Team B</string>
+    <string name="defaultPoints">0</string>
+    <string name="title_activity_login">WallyApp - Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login_enter">Enter</string>
+    <string name="incorrect_credentials">Incorrect username or password. Please try again.</string>
+    <string name="whatsapp_not_installed">Whatsapp has not been installed.</string>
+    <string name="wally_results">Results:\n %1$s (%2$d)\n %3$s (%4$d)\n</string>
+    <string name="teams">Teams</string>
+    <string name="matches">Matches</string>
+    <string name="logout">Logout</string>
+    <string name="noset">No Set</string>
+    <string name="desc">Description</string>
+    <string name="empty">Empty</string>
+    <string-array name="sets">
+        <item>First Set</item>
+        <item>Second Set</item>
+        <item>Third Set</item>
+        <item>Fourth Set</item>
+        <item>Fifth Set</item>
+    </string-array>
+    <string name="title_activity_detail_team">Detail</string>
 </resources>

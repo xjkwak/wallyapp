@@ -18,24 +18,27 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
+            android:text="@string/defaultNameTeamA"
+            android:layout_weight="40.0"/>
         <TextView
             android:id="@+id/setScoreA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0" />
+            android:text="@string/defaultPoints" />
 
         <ImageButton
             android:id="@+id/switchSidesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            android:onClick="showPopup"
+            android:contentDescription="@string/desc"
+            app:srcCompat="@drawable/menu_hamburguer" />
 
         <TextView
             android:id="@+id/setScoreB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0" />
+            android:text="@string/defaultPoints" />
 
         <EditText
             android:id="@+id/teamNameB"
@@ -43,44 +46,181 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Team A" />
+            android:text="@string/defaultNameTeamB"
+            android:layout_weight="40.0"/>
 
     </LinearLayout>
 
-    <Chronometer
-        android:id="@+id/chronometer"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/setName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/noset" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/pointsTeamA"
+            android:id="@+id/reduceTeamA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="addPoints"
-            android:text="0"
-            android:textSize="60sp"
+            android:onClick="reducePointsA"
+            android:text="-1"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
-
-
         <Button
-            android:id="@+id/pointsTeamB"
+            android:id="@+id/reduceTeamB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="addPoints"
-            android:text="0"
-            android:textSize="60sp"
+            android:onClick="reducePointsB"
+            android:text="-1"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/pointsTeamA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="addPoints"
+                android:text="@string/defaultPoints"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
 
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+                <ImageButton
+                    android:id="@+id/selectPlayersTeamA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_players"
+                    android:onClick="selectPlayersTeamA"
+                    android:contentDescription="@string/desc"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/pointsTeamB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="addPoints"
+                android:text="@string/defaultPoints"
+                android:textSize="60sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+
+                <ImageView
+                    android:id="@+id/image6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+
+                <ImageView
+                    android:id="@+id/image7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+
+                <ImageView
+                    android:id="@+id/image8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/default_player"
+                    android:contentDescription="@string/desc"
+                    />
+                <ImageButton
+                    android:id="@+id/selectPlayersTeamB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/select_players"
+                    android:onClick="selectPlayersTeamB"
+                    android:contentDescription="@string/desc"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>
