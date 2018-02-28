@@ -5,7 +5,7 @@ Todo esto para el campeonato de Wally "Silicon Wally".
 ## Características
 ### Autenticación
 1. Los árbitros pueden autenticarse para poder arbitrar los partidos que tengan asignados. (Usuario de prueba: diego/diego1..)
-2. Cualquier otro usuario puede autenticarse con su cuenta de Facebook.
+2. Cualquier otro usuario puede autenticarse con su cuenta de Facebook para ver los resultados de los partidos ya registrados o verlos en tiempo real.
 
 ### Listado de partidos
 Pueden verse todos los partidos del campeonato por fecha.
@@ -13,8 +13,15 @@ Pueden verse todos los partidos del campeonato por fecha.
 ### Registro de Puntos
 Los usuarios árbitros pueden elegir un partido que tengan asignado para arbitrar y comenzar a asignar puntos uno por uno a medida que se dan durante el juego.
 
+### Registro de jugadores
+Los usuarios árbitros pueden registran los jugadores que han participado de un partido.
+
 ### Marcador
 Los usuarios autenticados por faceebok y/o árbitros pueden ver el marcador de un partido en tiempo real siempre y cuando haya un árbitro registrando los puntos para el mismo.
 
 ### Listado de equipos
 Puede verse un listado de todos los equipos registrados en el campeonato.
+
+
+## Instalación
+Instalarse el APK en smartphones Android 4.1 o superior. 
