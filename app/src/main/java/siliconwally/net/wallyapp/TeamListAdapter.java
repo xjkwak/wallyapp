@@ -1,6 +1,8 @@
 package siliconwally.net.wallyapp;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamLi
 
     private List<Team> list;
     int selectedPosition = 0;
+    private Context context;
 
     public TeamListAdapter(List<Team> lista) {
         this.list = lista;
@@ -23,7 +26,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamLi
     public TeamListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
         v = LayoutInflater.from(parent.getContext()).inflate(R.layout.team_row, parent, false);
-
+        context = parent.getContext();
         return new TeamListViewHolder(v);
     }
 
@@ -33,7 +36,9 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamLi
         holder.name.setText(team.getName());
         holder.company.setText(team.getCompany());
 
-        holder.company.setBackgroundColor(selectedPosition == position ? Color.GREEN: Color.TRANSPARENT);
+        holder.company.setBackgroundColor(selectedPosition == position
+                ? ContextCompat.getColor(context, R.color.colorAccent)
+                : Color.TRANSPARENT);
     }
 
     @Override
