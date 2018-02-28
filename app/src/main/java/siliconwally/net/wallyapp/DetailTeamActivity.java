@@ -98,6 +98,9 @@ public class DetailTeamActivity extends AppCompatActivity {
 
     public void resetMatch(View view) {
 
+        MatchUtil matchUtil  = new MatchUtil();
+        matchUtil.updateNodeTeamStatus(match, MatchUtil.NOT_INITIALIZE, this.getApplicationContext());
+
         RestApiAdapter restApiAdapter = new RestApiAdapter();
         EndPointApi service = restApiAdapter.connexionToApi(getApplicationContext());
 

@@ -38,13 +38,16 @@ public class ScoreboardActivity extends BaseActivity {
     private int secondSetPoint;
     private TableRow llDetailA;
     private TableRow llDetailB;
+    private int colorA;
+    private int colorB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         Bundle extras = getIntent().getExtras();
-
+        colorA = ContextCompat.getColor(this, R.color.colorAccent);
+        colorB = ContextCompat.getColor(this, R.color.colorPrimaryDark);
         if (extras != null) {
             match = (Match) extras.getSerializable("match");
             fistSetPoint = match.getPointsSet();
@@ -77,6 +80,10 @@ public class ScoreboardActivity extends BaseActivity {
         final MediaPlayer pointsAsound = MediaPlayer.create(this, R.raw.pointsa);
         final MediaPlayer pointsBsound = MediaPlayer.create(this, R.raw.pointsb);
 
+        nameA.setText(match.getTeamA());
+        nameB.setText(match.getTeamB());
+        setColorA.setBackgroundColor(colorA);
+        setColorB.setBackgroundColor(colorB);
 
         addSetTeam(match, llDetailA, llDetailB);
 
@@ -123,50 +130,52 @@ public class ScoreboardActivity extends BaseActivity {
 
     private void updateScoreboard() {
         //Color of sets
-        int colorA = ContextCompat.getColor(this, R.color.colorAccent);
-        int colorB = ContextCompat.getColor(this, R.color.colorPrimaryDark) ;
-
-        nameA.setText(match.getTeamA());
-        nameB.setText(match.getTeamB());
         setScoreA.setText(String.valueOf(match.getCountA()));
         setScoreB.setText(String.valueOf(match.getCountB()));
 
         setA.setText(String.valueOf(match.getScoreA()));
         setB.setText(String.valueOf(match.getScoreB()));
-        setColorA.setBackgroundColor(colorA);
-        setColorB.setBackgroundColor(colorB);
 
-
-        fillDetailScore(llDetailA, match.getPointsA(), colorA , colorB);
-        fillDetailScore(llDetailB, match.getPointsB(), colorB, colorA);
+        fillDetailScore();
     }
 
-    private void fillDetailScore(TableRow linear, ArrayList<Integer> list,  int colorA, int colorB) {
-        int count = linear.getChildCount(); // TableRow already contain TexView of the team name
-        if (alreadyRenderPoint(count, list.size())) {
+    private void fillDetailScore() {
+        int count = llDetailA.getChildCount(); // TableRow already contain TexView of the team name
+        if (alreadyRenderPoint(count, match.getPointsA().size())) {
             return;
         }
 
+        for (int i = count-1; i<match.getPointsA().size(); i++) {
+            Integer item1 = match.getPointsA().get(i);
+            Integer item2 = match.getPointsB().get(i);
+
+            TextView text1 = createTextViewScore(item1);
+            TextView text2 = createTextViewScore(item2);
+
+            if (item1 > item2) {
+                text1.setBackgroundColor(colorA);
+                text2.setBackgroundColor(colorA);
+            }
+            else {
+                text1.setBackgroundColor(colorB);
+                text2.setBackgroundColor(colorB);
+            }
+
+            llDetailA.addView(text1);
+            llDetailB.addView(text2);
+        }
+    }
+
+    private TextView createTextViewScore(Integer val) {
         TableRow.LayoutParams ltwSets = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ltwSets.setMargins(5,0,5,0);
-        for (int i = count-1; i<list.size(); i++) {
-            Integer item = list.get(i);
-            TextView text = new TextView(this);
-            text.setText(String.valueOf(item));
-
-            if (item == fistSetPoint || item == secondSetPoint) {
-                text.setBackgroundColor(colorA);
-            }
-            if (item != fistSetPoint && item != secondSetPoint){
-                text.setBackgroundColor(colorB);
-            }
-
-            text.setPadding(5,5,25,0);
-            text.setTextColor(Color.WHITE);
-            text.setLayoutParams(ltwSets);
-            text.setTextSize(22);
-            linear.addView(text);
-        }
+        TextView text = new TextView(this);
+        text.setText(String.valueOf(val));
+        text.setPadding(5,5,25,0);
+        text.setTextColor(Color.WHITE);
+        text.setLayoutParams(ltwSets);
+        text.setTextSize(22);
+        return text;
     }
 
     private boolean alreadyRenderPoint(int count, int size) {
