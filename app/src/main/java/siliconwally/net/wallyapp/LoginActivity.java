@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 SessionManager session = new SessionManager(getApplicationContext());
                 session.saveUserName("Facebook User");
+                session.saveUserId("-1");
 
                 Intent i = new Intent(LoginActivity.this, MatchesActivity.class);
                 startActivity(i);
@@ -77,14 +78,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
                 clearCookies();
-                LoginManager.getInstance().logOut();
             }
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
-                System.out.print("falla!!!!!");
             }
         });
+        LoginManager.getInstance().logOut();
     }
 
 
