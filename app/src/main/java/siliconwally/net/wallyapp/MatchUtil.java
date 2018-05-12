@@ -50,9 +50,53 @@ public class MatchUtil {
         JsonArray arrayState = new JsonArray();
         arrayState.add(state);
 
+
+        JsonArray arrayScoreA= new JsonArray();
+        JsonArray arraySetsA= new JsonArray();
+        JsonArray arrayScoreB= new JsonArray();
+        JsonArray arraySetsB= new JsonArray();
+
+        int scoreA, scoreB;
+        if (status.equals(MatchUtil.NOT_INITIALIZE)) {
+            scoreA = 0;
+            scoreB = 0;
+            arraySetsA.add(0);
+            arraySetsA.add(0);
+            arraySetsA.add(0);
+            arraySetsA.add(0);
+            arraySetsA.add(0);
+            arraySetsB.add(0);
+            arraySetsB.add(0);
+            arraySetsB.add(0);
+            arraySetsB.add(0);
+            arraySetsB.add(0);
+        }
+        else {
+            scoreA = match.getScoreA();
+            scoreB = match.getScoreB();
+            arraySetsA.add(match.getPointsA().get(0));
+            arraySetsA.add(match.getPointsA().get(1));
+            if (match.getPointsA().size() > 2) {
+                arraySetsA.add(match.getPointsA().get(2));
+            }
+
+            arraySetsB.add(match.getPointsB().get(0));
+            arraySetsB.add(match.getPointsB().get(1));
+            if (match.getPointsB().size() > 2) {
+                arraySetsB.add(match.getPointsB().get(2));
+            }
+        }
+
+        arrayScoreA.add(scoreA);
+        arrayScoreB.add(scoreB);
+
         data.add("nid", arrayNid);
         data.add("type", arrayType);
         data.add("field_partido_estado", arrayState);
+        data.add("field_partido_score_a", arrayScoreA);
+        data.add("field_partido_sets_a", arraySetsA);
+        data.add("field_partido_score_b", arrayScoreB);
+        data.add("field_partido_sets_b", arraySetsB);
 
         service.updateStateMatch(nid, data).enqueue(new Callback<MatchNode>() {
 
