@@ -79,11 +79,17 @@ public class MatchUtil {
             if (match.getPointsA().size() > 2) {
                 arraySetsA.add(match.getPointsA().get(2));
             }
+            else {
+                arraySetsA.add(0);
+            }
 
             arraySetsB.add(match.getPointsB().get(0));
             arraySetsB.add(match.getPointsB().get(1));
             if (match.getPointsB().size() > 2) {
                 arraySetsB.add(match.getPointsB().get(2));
+            }
+            else {
+                arraySetsB.add(0);
             }
         }
 

@@ -29,18 +29,18 @@ public interface EndPointApi {
     @GET("/user/logout?_format=json")
     Call<Login> logout();
 
-    @PATCH("/node/{nid}")
+    @PATCH("/node/{nid}?_format=json")
     Call<MatchNode> updateStateMatch(@Path("nid") int id, @Body JsonObject data);
 
-    @GET("/equiposjson")
+    @GET("/equiposjson?_format=json")
     Call<List<Team>> teams();
 
-    @GET("/api/v1/matches")
+    @GET("/api/v1/matches?_format=json")
     Call<List<Match>> matches();
 
-    @GET("/api/v1/matches/{nid}")
+    @GET("/api/v1/matches/{nid}?_format=json")
     Call<List<Match>> matches(@Path("nid") int id);
 
-    @GET("/api/v1/teams/{nid}/players")
+    @GET("/api/v1/teams/{nid}/players?_format=json")
     Call<ArrayList<Player>> players(@Path("nid") int nid);
 }
