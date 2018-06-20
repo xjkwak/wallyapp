@@ -113,7 +113,9 @@ public class DetailTeamActivity extends AppCompatActivity {
 
                 if (matches != null && !matches.isEmpty()) {
                     DetailTeamActivity.this.match = matches.get(0);
-                    mDatabase.child("matches").child(String.valueOf(match.getNid())).setValue(match);
+                    DetailTeamActivity.this.match.setEstado("No iniciado");
+                    System.out.println("Reseteando: " + DetailTeamActivity.this.match);
+                    mDatabase.child("matches").child(String.valueOf(DetailTeamActivity.this.match.getNid())).setValue(DetailTeamActivity.this.match);
                 }
             }
 

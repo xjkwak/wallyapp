@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -21,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class ScoreboardActivity extends BaseActivity {
+public class ScoreboardActivity extends AppCompatActivity {
 
     private TextView nameA;
     private TextView nameB;

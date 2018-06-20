@@ -71,10 +71,14 @@ public class MainActivity extends BaseActivity {
         mDatabase.child("matches").child(String.valueOf(match.getNid())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                match = dataSnapshot.getValue(Match.class);
+                Match match = dataSnapshot.getValue(Match.class);
                 if (match != null ) {
+                    MainActivity.this.match = match;
                     scoreTeamA.setText(String.valueOf(match.getCountA()));
                     scoreTeamB.setText(String.valueOf(match.getCountB()));
+                }
+                else {
+                    mDatabase.child("matches").child(String.valueOf(MainActivity.this.match.getNid())).setValue(MainActivity.this.match);
                 }
             }
 
@@ -96,7 +100,17 @@ public class MainActivity extends BaseActivity {
         teamNameA.setKeyListener(null);
         teamNameB.setKeyListener(null);
 
+        System.out.println("Cargandoooo:");
+        System.out.println(match);
         if (match != null) {
+            setSetName();
+            scoreA.setText(String.valueOf(match.getScoreA()));
+            scoreB.setText(String.valueOf(match.getScoreB()));
+
+            if (match.hasFinished() || match.getEstado().equals("Finalizado")) {
+                scoreTeamA.setClickable(false);
+                scoreTeamB.setClickable(false);
+            }
             teamNameA.setText(match.getTeamA());
             teamNameB.setText(match.getTeamB());
         }
@@ -193,6 +207,7 @@ public class MainActivity extends BaseActivity {
         int teamA = Integer.parseInt(scoreTeamA.getText().toString());
         int teamB = Integer.parseInt(scoreTeamB.getText().toString());
 
+        System.out.println("El partido a modificar: "+ match);
         match.setCountA(teamA);
         match.setCountB(teamB);
 
@@ -207,6 +222,7 @@ public class MainActivity extends BaseActivity {
                 scoreTeamA.setClickable(false);
                 scoreTeamB.setClickable(false);
                 matchUtil  = new MatchUtil();
+                match.setEstado("Finalizado");
                 matchUtil.updateNodeTeamStatus(match, MatchUtil.FINALIZED, this.getApplicationContext());
             }
         }

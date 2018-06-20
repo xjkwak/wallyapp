@@ -76,7 +76,8 @@
         <activity android:name=".TeamsActivity" />
         <activity
             android:name=".ScoreboardActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

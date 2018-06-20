@@ -200,7 +200,7 @@ public class Match implements Serializable {
     public String toString() {
         return "[" + teamA + "(" + countA + ") vs " + teamB + "(" + countB + ")], arbitro="
                 + this.uidArbitro + " Points set = " + this.pointsSet + ", Points tie = " + this.pointsTie
-                + ", Points to win = " + this.setsToWin;
+                + ", Points to win = " + this.setsToWin + ", Status = "+ this.estado;
     }
 
     public void updateScore() {
