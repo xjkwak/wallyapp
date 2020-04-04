@@ -77,11 +77,13 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
+                System.out.println("ON RESPONSE");
                 clearCookies();
             }
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
+                System.out.println("ON FAILURE");
             }
         });
         LoginManager.getInstance().logOut();

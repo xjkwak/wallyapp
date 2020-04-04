@@ -74,7 +74,7 @@ public class LastPlaysFragment extends Fragment {
                 List<Match> matches = response.body();
 
                 System.out.println("Recuperó");
-//                MatchesActivity.this.writeMatches(matches);
+                LastPlaysFragment.this.writeMatches(matches);
                 initSpinnerWeeks(matches);
 
                 System.out.println(matches.toString());
@@ -124,5 +124,12 @@ public class LastPlaysFragment extends Fragment {
             }
         });
 
+    }
+
+    private void writeMatches(List<Match> teams) {
+
+        for (Match team: teams) {
+            mDatabase.child("matches").child(String.valueOf(team.getNid())).setValue(team);
+        }
     }
 }
